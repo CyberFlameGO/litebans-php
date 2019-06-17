@@ -68,10 +68,10 @@ $settings = $this->page->settings;
     <link href="<?php echo $this->page->autoversion('inc/css/glyphicons.min.css'); ?>" rel="stylesheet">
     <link href="<?php echo $this->page->autoversion('inc/css/custom.css'); ?>" rel="stylesheet">
     <script type="text/javascript">
-        function withjQuery(f) {
+        function withjQuery(tries, f) {
             if (window.jQuery) f();
-            else window.setTimeout(function () {
-                withjQuery(f);
+            else if (tries > 0) window.setTimeout(function () {
+                withjQuery(tries - 1, f);
             }, 100);
         }
     </script>
@@ -100,8 +100,8 @@ $settings = $this->page->settings;
                 ));
                 ?>
                 <ul class="nav navbar-nav my-2 my-lg-0">
-                        <a href="https://www.spigotmc.org/resources/litebans.3715/"
-                           target="_blank">&copy; LiteBans</a>
+                    <a href="https://www.spigotmc.org/resources/litebans.3715/"
+                       target="_blank">&copy; LiteBans</a>
                 </ul>
             </div>
         </div>
