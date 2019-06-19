@@ -21,15 +21,15 @@ class Lang {
         $array["generic.warn"] = "警告";
         $array["generic.kick"] = "踢出";
 
-        $array["generic.banned"] = "已封禁";
-        $array["generic.muted"] = "已禁言";
-        $array["generic.warned"] = "已警告";
-        $array["generic.kicked"] = "已踢出";
+        $array["generic.banned"] = "";
+        $array["generic.muted"] = "";
+        $array["generic.warned"] = "";
+        $array["generic.kicked"] = "";
 
-        $array["generic.banned.by"] = $array["generic.banned"] . "";
-        $array["generic.muted.by"] = $array["generic.muted"] . "";
-        $array["generic.warned.by"] = $array["generic.warned"] . "";
-        $array["generic.kicked.by"] = $array["generic.kicked"] . "";
+        $array["generic.banned.by"] = $array["generic.banned"] . "处理者";
+        $array["generic.muted.by"] = $array["generic.muted"] . "处理者";
+        $array["generic.warned.by"] = $array["generic.warned"] . "处理者";
+        $array["generic.kicked.by"] = $array["generic.kicked"] . "处理者";
 
         $array["generic.ipban"] = "IP " . $array["generic.ban"];
         $array["generic.ipmute"] = "IP " . $array["generic.mute"];
