@@ -38,7 +38,7 @@ final class Settings {
         $this->info_badge_classes = 'badge';
 
         // Show server scope column?
-        $this->show_server_scope = true;
+        $this->show_server_scope = false;
 
         // Show inactive bans? Removed bans will show (Unbanned), mutes will show (Unmuted), warnings will show (Expired).
         $this->show_inactive_bans = true;
