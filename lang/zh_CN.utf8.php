@@ -21,15 +21,15 @@ class Lang {
         $array["generic.warn"] = "警告";
         $array["generic.kick"] = "踢出";
 
-        $array["generic.banned"] = "已封禁";
-        $array["generic.muted"] = "已禁言";
-        $array["generic.warned"] = "已警告";
-        $array["generic.kicked"] = "已踢出";
+        $array["generic.banned"] = "";
+        $array["generic.muted"] = "";
+        $array["generic.warned"] = "";
+        $array["generic.kicked"] = "";
 
-        $array["generic.banned.by"] = $array["generic.banned"] . " 处理者";
-        $array["generic.muted.by"] = $array["generic.muted"] . " 处理者";
-        $array["generic.warned.by"] = $array["generic.warned"] . " 处理者";
-        $array["generic.kicked.by"] = $array["generic.kicked"] . " 处理者";
+        $array["generic.banned.by"] = $array["generic.banned"] . "处理者";
+        $array["generic.muted.by"] = $array["generic.muted"] . "处理者";
+        $array["generic.warned.by"] = $array["generic.warned"] . "处理者";
+        $array["generic.kicked.by"] = $array["generic.kicked"] . "处理者";
 
         $array["generic.ipban"] = "IP " . $array["generic.ban"];
         $array["generic.ipmute"] = "IP " . $array["generic.mute"];
@@ -42,7 +42,7 @@ class Lang {
         $array["generic.active"] = "有效";
         $array["generic.inactive"] = "无效";
         $array["generic.expired"] = "已过期";
-        $array["generic.player-name"] = "玩家id";
+        $array["generic.player-name"] = "玩家ID";
 
         $array["page.expired.ban"] = '(已解封)';
         $array["page.expired.ban-by"] = '(解封者为 {name})';
