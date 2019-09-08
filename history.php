@@ -200,13 +200,14 @@ try {
             $label = "<span class='$bc litebans-label-history litebans-label-$label_type'>$label_name</span>";
 
             $page->print_table_rows($row, array(
-                "type"        => $label,
-                "player"      => $page->get_avatar($page->get_name($row['uuid']), $row['uuid']),
-                "executor"    => $page->get_avatar($page->get_banner_name($row), $row['banned_by_uuid']),
-                "reason"      => $page->clean($row['reason']),
-                "date"        => $page->millis_to_date($row['time']),
-                "expires"     => $page->expiry($row),
-                "server.name" => $page->server($row),
+                "type"          => $label,
+                "player"        => $page->get_avatar($page->get_name($row['uuid']), $row['uuid']),
+                "executor"      => $page->get_avatar($page->get_banner_name($row), $row['banned_by_uuid']),
+                "reason"        => $page->clean($row['reason']),
+                "date"          => $page->millis_to_date($row['time']),
+                "expires"       => $page->expiry($row),
+                "server.name"   => $page->server($row),
+                "server.origin" => $page->server($row, "server_origin"),
             ));
         }
 

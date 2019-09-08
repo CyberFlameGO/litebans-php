@@ -449,6 +449,9 @@ class Page {
         if (!$this->settings->show_server_scope) {
             unset($array["server.name"]);
         }
+        if (!$this->settings->show_server_origin) {
+            unset($array["server.origin"]);
+        }
         if ($print_headers && !$this->table_headers_printed) {
             $headers = array_keys($array);
             $headers_translated = array();

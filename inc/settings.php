@@ -40,6 +40,9 @@ final class Settings {
         // Show server scope column?
         $this->show_server_scope = false;
 
+        // Show server origin column?
+        $this->show_server_origin = false;
+
         // Show inactive bans? Removed bans will show (Unbanned), mutes will show (Unmuted), warnings will show (Expired).
         $this->show_inactive_bans = true;
 
