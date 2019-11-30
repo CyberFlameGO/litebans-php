@@ -24,8 +24,9 @@
             - Check that LiteBans has successfully connected to a MySQL database using <a class="text-info">/litebans
                 info</a>
             <br>
-            - Ensure that the plugin is using the MySQL driver (<a class="text-info">driver: MySQL</a> in config.yml) to
-            connect to the database.
+            - Ensure that the plugin is using the MySQL driver to connect to the database.
+            (In config.yml, replace
+            <a class="text-danger">"driver: H2"</a> with <a class="text-info">"driver: MySQL"</a>)
             <?php
             require_once '../inc/settings.php';
             $settings = new Settings(false);
