@@ -127,12 +127,13 @@ filter_var($id, FILTER_VALIDATE_INT) or die("Invalid ID");
 
 $id = (int)$id;
 
+// Safe user input (constants only)
 $type = $page->type;
 $table = $page->table;
-$sel = $page->get_selection($table);
-$query = "SELECT $sel FROM $table WHERE id=:id LIMIT 1";
 
-$st = $page->conn->prepare($query);
+$select = $page->get_selection($table); // Not user input
+
+$st = $page->conn->prepare("SELECT $select FROM $table WHERE id=:id LIMIT 1");
 $st->bindParam(":id", $id, PDO::PARAM_INT);
 
 if ($st->execute()) {

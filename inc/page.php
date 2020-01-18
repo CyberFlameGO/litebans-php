@@ -137,8 +137,8 @@ class Page {
 
     function run_query() {
         try {
-            $table = $this->table;
-            $limit = $this->settings->limit_per_page;
+            $table = $this->table; // Safe user input (constants only)
+            $limit = $this->settings->limit_per_page; // Not user input
 
             $offset = 0;
             if ($this->settings->show_pager) {
@@ -146,14 +146,12 @@ class Page {
                 $offset = ($limit * $page);
             }
 
-            $sel = $this->get_selection($table);
+            $select = $this->get_selection($table); // Not user input
 
-            $where = $this->where_append($this->name === "kicks" ? "" : $this->settings->active_query);
+            $where = $this->where_append($this->name === "kicks" ? "" : $this->settings->active_query); // Not user input
             $where .= "(uuid <> '#offline#' AND uuid IS NOT NULL)";
 
-            $query = "SELECT $sel FROM $table $where GROUP BY $table.id ORDER BY time DESC LIMIT :limit OFFSET :offset";
-            $st = $this->conn->prepare($query);
-
+            $st = $this->conn->prepare("SELECT $select FROM $table $where GROUP BY $table.id ORDER BY time DESC LIMIT :limit OFFSET :offset");
             $st->bindParam(':offset', $offset, PDO::PARAM_INT);
             $st->bindParam(':limit', $limit, PDO::PARAM_INT);
 
@@ -188,8 +186,7 @@ class Page {
         if ($phpIsBroken === true) {
             foreach ($bitColumns as $column) {
                 unset($columns[$column]);
-                $alias = $column;
-                array_push($columns, "CAST($column AS UNSIGNED) AS $alias");
+                array_push($columns, "CAST($column AS UNSIGNED) AS $column");
             }
         }
         $selection = implode(",", $columns);
@@ -268,9 +265,9 @@ class Page {
         if (array_key_exists($uuid, $this->uuid_name_cache)) return $this->uuid_name_cache[$uuid];
 
         $result = null;
-        $history = $this->settings->table['history'];
+        $table = $this->settings->table['history']; // Not user input
 
-        $stmt = $this->conn->prepare("SELECT name FROM $history WHERE uuid=:uuid ORDER BY date DESC LIMIT 1");
+        $stmt = $this->conn->prepare("SELECT name FROM $table WHERE uuid=:uuid ORDER BY date DESC LIMIT 1");
         $stmt->bindParam(":uuid", $uuid, PDO::PARAM_STR);
         if ($stmt->execute() && $row = $stmt->fetch()) {
             $result = $row['name'];
@@ -507,8 +504,10 @@ class Page {
         echo '
          <div class="row litebans-check">
              <div class="litebans-check litebans-check-form">
-                 <form action="check.php" onsubmit="captureForm(event);" class="form-inline"><div class="form-group">
-                    <input type="text" class="form-control" name="name" id="user" placeholder="' . $this->t("generic.player-name") . '"></div>
+                 <form action="check.php" onsubmit="captureForm(event);" class="form-inline">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="name" id="user" placeholder="' . $this->t("generic.player-name") . '">
+                    </div>
                     <input type="hidden" name="table" value="' . $this->name . '">
                     <button type="submit" class="btn btn-primary" style="margin-left: 5px;">' . $this->t("action.check") . '</button>
                  </form>

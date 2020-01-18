@@ -12,18 +12,16 @@ class History {
      * @param string $field
      */
     static function push($page, &$array, $type, $uuid, $field, $before, $after) {
-        $table = $page->settings->table[$type];
-
-        $sel = $page->get_selection($table);
-
-        $limit = $page->settings->limit_per_page;
+        $table = $page->settings->table[$type]; // Not user input
+        $select = $page->get_selection($table); // Not user input
+        $limit = $page->settings->limit_per_page; // Not user input
 
         if ($after > 0) {
             $order = "ASC";
         } else {
             $order = "DESC";
         }
-        $st = $page->conn->prepare("SELECT $sel FROM $table WHERE $field=:uuid AND time > :after AND time < :before ORDER BY time $order LIMIT :limit");
+        $st = $page->conn->prepare("SELECT $select FROM $table WHERE $field=:uuid AND time > :after AND time < :before ORDER BY time $order LIMIT :limit");
         $st->bindParam(":uuid", $uuid, PDO::PARAM_STR);
         $st->bindParam(":limit", $limit, PDO::PARAM_INT);
         $st->bindParam(":before", $before, PDO::PARAM_INT);
@@ -125,11 +123,12 @@ if (isset($_GET['after']) && is_string($_GET['after'])) {
 try {
     $all = array();
 
-    $field = "uuid";
+    $field = "uuid"; // Safe user input (constants only)
     if ($staffhistory) {
         $field = "banned_by_uuid";
     }
 
+    // Not user input
     $t = $page->settings->table;
     $t_bans = $t['bans'];
     $t_mutes = $t['mutes'];

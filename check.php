@@ -5,7 +5,7 @@ class Check {
     public function run($name, $from) {
         $page = new Page("check", false);
 
-        $column = "name";
+        $column = "name"; // Safe user input (constants only)
 
         // validate user input
         if ($page->is_uuid($name) && preg_match("/^[0-9a-zA-Z-]{32,36}$/", $name)) {
@@ -15,10 +15,10 @@ class Check {
             $this->println($page->t("error.name.invalid"));
             return;
         }
-        $history = $page->settings->table['history'];
+        $table = $page->settings->table['history']; // Not user input
 
         try {
-            $stmt = $page->conn->prepare("SELECT name,uuid FROM $history WHERE $column=:val ORDER BY date LIMIT 1");
+            $stmt = $page->conn->prepare("SELECT name,uuid FROM $table WHERE $column=:val ORDER BY date LIMIT 1");
             $stmt->bindParam(':val', $name, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 if ($row = $stmt->fetch()) {
