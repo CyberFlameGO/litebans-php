@@ -18,7 +18,7 @@ class Check {
         $table = $page->settings->table['history']; // Not user input
 
         try {
-            $stmt = $page->conn->prepare("SELECT name,uuid FROM $table WHERE $column=:val ORDER BY date LIMIT 1");
+            $stmt = $page->conn->prepare("SELECT name,uuid FROM $table WHERE $column=:val ORDER BY date DESC LIMIT 1");
             $stmt->bindParam(':val', $name, PDO::PARAM_STR);
             if ($stmt->execute()) {
                 if ($row = $stmt->fetch()) {
