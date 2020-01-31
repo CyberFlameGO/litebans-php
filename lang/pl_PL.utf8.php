@@ -64,7 +64,7 @@ class Lang {
         $array["table.server.global"] = "*";
         $array["table.pager.number"] = "Strona";
 
-        $array["action.check"] = "Czek";
+        $array["action.check"] = "Sprawdź";
         $array["action.return"] = "Powróć do {origin}";
 
         $array["error.missing-args"] = "Brakujące argumenty.";
