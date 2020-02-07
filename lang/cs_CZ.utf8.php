@@ -12,8 +12,8 @@ class Lang {
         $array["title.mutes"] = 'Umlčení';
         $array["title.warnings"] = 'Varování';
         $array["title.kicks"] = 'Vyhození';
-        $array["title.player-history"] = "Nedávne tresty pro {name}";
-        $array["title.staff-history"] = "Nedávne tresty od {name}";
+        $array["title.player-history"] = "Nedávné tresty pro {name}";
+        $array["title.staff-history"] = "Nedávné tresty od {name}";
 
 
         $array["generic.ban"] = "Ban";
@@ -59,8 +59,8 @@ class Lang {
         $array["table.received-warning"] = "Poslední varování";
 
         $array["table.server.name"] = "Server";
-        $array["table.server.scope"] = "Platí pro Servery";
-        $array["table.server.origin"] = "Uděleno na Serveru";
+        $array["table.server.scope"] = "Platí pro servery";
+        $array["table.server.origin"] = "Uděleno na serveru";
         $array["table.server.global"] = "*";
         $array["table.pager.number"] = "Stránka";
 
