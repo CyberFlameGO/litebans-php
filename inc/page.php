@@ -95,6 +95,7 @@ class Page {
                     "type"  => "ban",
                     "table" => $settings->table['bans'],
                     "title" => $this->t("title.bans"),
+                    "page"  => "bans.php",
                 );
             case "mute":
             case "mutes":
@@ -102,6 +103,7 @@ class Page {
                     "type"  => "mute",
                     "table" => $settings->table['mutes'],
                     "title" => $this->t("title.mutes"),
+                    "page"  => "mutes.php",
                 );
             case "warn":
             case "warnings":
@@ -109,6 +111,7 @@ class Page {
                     "type"  => "warn",
                     "table" => $settings->table['warnings'],
                     "title" => $this->t("title.warnings"),
+                    "page"  => "warnings.php",
                 );
             case "kick":
             case "kicks":
@@ -116,12 +119,14 @@ class Page {
                     "type"  => "kick",
                     "table" => $settings->table['kicks'],
                     "title" => $this->t("title.kicks"),
+                    "page"  => "kicks.php",
                 );
             default:
                 return array(
                     "type"  => null,
                     "table" => null,
                     "title" => null,
+                    "page"  => null,
                 );
         }
     }

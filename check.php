@@ -29,8 +29,8 @@ class Check {
             $stmt->closeCursor();
 
             // sanitize $_POST['table'] ($from)
-            $from_type = $page->type_info($from);
-            $type = $from_type['type'];
+            $info = $page->type_info($from);
+            $type = $info['type'];
 
             if (!isset($uuid)) {
                 if (filter_var($name, FILTER_VALIDATE_FLOAT)) {
@@ -46,7 +46,7 @@ class Check {
             $href = "history.php?uuid=$uuid";
 
             if ($type !== null) {
-                $href .= "&from=" . Page::lc_first($from_type['title']);
+                $href .= "&from=$type";
             }
 
             echo "<br>";

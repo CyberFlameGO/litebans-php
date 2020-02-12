@@ -99,7 +99,7 @@ if (isset($_GET['from'])) {
     if ($info['type'] !== null) {
         $from_title = $info['title'];
         $from = Page::lc_first($from_title);
-        $from_href = "$from.php";
+        $from_href = $info['page'];
     }
 }
 
