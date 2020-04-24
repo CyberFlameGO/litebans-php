@@ -92,6 +92,7 @@ final class Settings {
         $this->date_format = '%B %d, %Y, %H:%M';
 
         // https://secure.php.net/manual/en/timezones.php
+        // Example: "Europe/London"
         $timezone = "UTC";
 
         // Enable PHP error reporting.
