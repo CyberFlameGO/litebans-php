@@ -3,6 +3,7 @@ require_once './inc/init.php';
 
 class Page {
     public function __construct($name, $header = true, $connect = true) {
+        $this->time = microtime(true);
         ini_set('default_charset', 'utf-8');
         require_once './inc/settings.php';
         if (class_exists("EnvSettings")) {
@@ -23,7 +24,6 @@ class Page {
             $this->lang = $this->defaultlang;
         }
 
-        $this->time = microtime(true);
         if ($header) {
             require_once './inc/header.php';
         }
