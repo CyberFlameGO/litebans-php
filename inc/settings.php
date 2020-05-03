@@ -11,16 +11,16 @@ final class Settings {
         $this->host = 'localhost';
         $this->port = 3306;
 
-        $database = 'litebans';
+        $this->database = 'litebans';
 
-        $username = '';
-        $password = '';
+        $this->username = '';
+        $this->password = '';
 
         // If you set a table prefix in config.yml, set it here as well
         $this->table_prefix = "litebans_";
 
         // Supported drivers: mysql, pgsql
-        $driver = 'mysql';
+        $this->driver = 'mysql';
 
         // Server name, shown on the main page and on the header
         $this->name = 'LiteBans';
@@ -136,7 +136,7 @@ final class Settings {
 
         $this->active_query = "";
 
-        if ($driver === "pgsql") {
+        if ($this->driver === "pgsql") {
             Settings::$TRUE = "B'1'";
             Settings::$FALSE = "B'0'";
         }
@@ -166,13 +166,16 @@ final class Settings {
             'config'   => "${table_prefix}config",
         );
 
-        $this->driver = $driver;
         if ($connect) {
+            $driver = $this->driver;
+            $host = $this->host;
+            $port = $this->port;
+            $database = $this->database;
+            $username = $this->username;
+            $password = $this->password;
             if ($username === "" && $password === "") {
                 redirect("error/unconfigured.php");
             }
-            $host = $this->host;
-            $port = $this->port;
 
             $dsn = "$driver:dbname=$database;host=$host;port=$port";
             if ($driver === 'mysql') {
