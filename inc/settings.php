@@ -257,7 +257,6 @@ class Settings {
         }
     }
 
-
     private function test_strftime() {
         // If you modify this function, you may get an "Assertion failed" error.
         date_default_timezone_set("UTC"); // temporarily set UTC timezone for testing purposes
@@ -280,17 +279,11 @@ class Settings {
         date_default_timezone_set($this->timezone); // set configured timezone
     }
 
+
     protected function init_tables() {
-        $table_prefix = $this->table_prefix;
-        // Internal table names, do not translate.
-        $this->table = array(
-            'bans'     => "${table_prefix}bans",
-            'mutes'    => "${table_prefix}mutes",
-            'warnings' => "${table_prefix}warnings",
-            'kicks'    => "${table_prefix}kicks",
-            'history'  => "${table_prefix}history",
-            'servers'  => "${table_prefix}servers",
-            'config'   => "${table_prefix}config",
-        );
+        $this->table = array();
+        array_map(function ($t) {
+            $this->table[$t] = $this->table_prefix . $t;
+        }, array('bans', 'mutes', 'warnings', 'kicks', 'history', 'servers', 'config'));
     }
 }
