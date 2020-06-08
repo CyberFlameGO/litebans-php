@@ -210,10 +210,6 @@ class Page {
 
         if (strlen($uuid) === 36 && $uuid[14] === '3') {
             $avatar_source = $this->settings->avatar_source_offline_mode;
-            // Avatars cannot be associated with offline mode UUIDs (version 3)
-            if (!$this->settings->avatar_allow_offline_mode_uuids) {
-                $uuid = $name;
-            }
         }
 
         $uuid = $this->uuid_undashify($uuid);
