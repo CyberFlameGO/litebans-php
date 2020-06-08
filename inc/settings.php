@@ -68,7 +68,7 @@ final class Settings {
         // 'https://cravatar.eu/avatar/{uuid}/25'
         // 'https://crafatar.com/avatars/{uuid}?size=25'
         // 'https://minotar.net/avatar/{uuid}/25'
-        $this->avatar_source = 'https://crafatar.com/avatars/{uuid}?size=25&overlay';
+        $this->avatar_source = 'https://cravatar.eu/avatar/{uuid}/25';
 
         // `avatar_source_offline_mode` controls where avatars for offline-mode players are fetched from.
         // Offline-mode UUIDs are substituted for player names unless the `avatar_allow_offline_mode_uuids` option is enabled.
