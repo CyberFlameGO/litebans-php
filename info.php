@@ -6,22 +6,23 @@ abstract class Info {
      * @param $row PDO::PDORow
      * @param $page Page
      */
-    public function __construct($row, $page) {
+    public function __construct($row, $player_name, $page) {
         $this->row = $row;
         $this->page = $page;
         $this->table = $page->table;
+        $this->player_name = $player_name;
     }
 
-    static function create($row, $page, $type) {
+    static function create($row, $player_name, $page, $type) {
         switch ($type) {
             case "ban":
-                return new BanInfo($row, $page);
+                return new BanInfo($row, $player_name, $page);
             case "mute":
-                return new MuteInfo($row, $page);
+                return new MuteInfo($row, $player_name, $page);
             case "warn":
-                return new WarnInfo($row, $page);
+                return new WarnInfo($row, $player_name, $page);
             case "kick":
-                return new KickInfo($row, $page);
+                return new KickInfo($row, $player_name, $page);
         }
         return null;
     }
@@ -34,79 +35,45 @@ abstract class Info {
         return ((int)$this->row['until']) <= 0;
     }
 
-    function punished_avatar($player_name, $row) {
-        return $this->page->get_avatar($player_name, $row['uuid'], true, $this->history_link($player_name, $row['uuid']), $name_left = false);
+    function punished_avatar() {
+        return $this->page->get_avatar($this->player_name, $this->row['uuid'], true, $this->history_link($this->player_name, $this->row['uuid']), $name_left = false);
     }
 
-    function history_link($player_name, $uuid, $args = "") {
+    function history_link($name, $uuid, $args = "") {
         $uuid = $this->page->uuid_undashify($uuid);
-        return "<a href=\"history.php?uuid=$uuid$args\">$player_name</a>";
+        return "<a href=\"history.php?uuid=$uuid$args\">$name</a>";
     }
 
-    function moderator_avatar($row) {
+    function moderator_avatar() {
+        $row = $this->row;
         $banner_name = $this->page->get_banner_name($row);
         return $this->page->get_avatar($banner_name, $row['banned_by_uuid'], true, $this->history_link($banner_name, $row['banned_by_uuid'], "&staffhistory=1"), $name_left = false);
     }
 
-    abstract function basic_info($row, $player_name);
-}
-
-class BanInfo extends Info {
-    function basic_info($row, $player_name) {
-        $page = $this->page;
+    function basic_info() {
         return array(
-            "table.player"        => $this->punished_avatar($player_name, $row),
-            "table.executor"      => $this->moderator_avatar($row),
-            "table.reason"        => $page->clean($row['reason']),
-            "table.date"          => $page->millis_to_date($row['time']),
-            "table.expires"       => $page->expiry($row),
-            "table.server.scope"  => $page->server($row),
-            "table.server.origin" => $page->server($row, "server_origin"),
+            "table.player"        => function (Info $info) { return $info->punished_avatar(); },
+            "table.executor"      => function (Info $info) { return $info->moderator_avatar(); },
+            "table.reason"        => function (Info $info) { return $info->page->clean($info->row['reason']); },
+            "table.date"          => function (Info $info) { return $info->page->millis_to_date($info->row['time']); },
+            "table.expires"       => function (Info $info) { return $info->page->expiry($info->row); },
+            "table.server.scope"  => function (Info $info) { return $info->page->server($info->row); },
+            "table.server.origin" => function (Info $info) { return $info->page->server($info->row, "server_origin"); },
         );
     }
 }
 
-class MuteInfo extends Info {
-    function basic_info($row, $player_name) {
-        $page = $this->page;
-        return array(
-            "table.player"        => $this->punished_avatar($player_name, $row),
-            "table.executor"      => $this->moderator_avatar($row),
-            "table.reason"        => $page->clean($row['reason']),
-            "table.date"          => $page->millis_to_date($row['time']),
-            "table.expires"       => $page->expiry($row),
-            "table.server.scope"  => $page->server($row),
-            "table.server.origin" => $page->server($row, "server_origin"),
-        );
-    }
-}
-
-class WarnInfo extends Info {
-    function basic_info($row, $player_name) {
-        $page = $this->page;
-        return array(
-            "table.player"        => $this->punished_avatar($player_name, $row),
-            "table.executor"      => $this->moderator_avatar($row),
-            "table.reason"        => $page->clean($row['reason']),
-            "table.date"          => $page->millis_to_date($row['time']),
-            "table.expires"       => $page->expiry($row),
-            "table.server.scope"  => $page->server($row),
-            "table.server.origin" => $page->server($row, "server_origin"),
-        );
-    }
-}
+//-
+class BanInfo extends Info {}
+class MuteInfo extends Info {}
+class WarnInfo extends Info {}
+//+
 
 class KickInfo extends Info {
-    function basic_info($row, $player_name) {
-        $page = $this->page;
-        return array(
-            "table.player"        => $this->punished_avatar($player_name, $row),
-            "table.executor"      => $this->moderator_avatar($row),
-            "table.reason"        => $page->clean($row['reason']),
-            "table.date"          => $page->millis_to_date($row['time']),
-            "table.server.scope"  => $page->server($row),
-            "table.server.origin" => $page->server($row, "server_origin"),
-        );
+    function basic_info() {
+        $array = parent::basic_info();
+        unset($array["table.expires"]); // kicks do not expire
+        return $array;
     }
 }
 
@@ -144,7 +111,7 @@ if ($st->execute()) {
 
     ($player_name !== null) or die(str_replace("{name}", $player_name, $page->t("error.name.unseen")));
 
-    $info = Info::create($row, $page, $type);
+    $info = Info::create($row, $player_name, $page, $type);
 
     $name = $page->t("generic.$type");
     $permanent = $info->permanent();
@@ -191,6 +158,7 @@ if ($st->execute()) {
 
     foreach ($map as $key => $val) {
         $key = $page->t($key);
+        $val = $val($info);
         echo "<tr><td>$key</td><td>$val</td></tr>";
     }
 
