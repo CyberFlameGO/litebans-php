@@ -194,13 +194,15 @@ try {
 
             $page->set_info($page->type_info($type));
 
+            $player_name = $page->get_name($row['uuid']);
+
             $label_type = $page->type;
-            $label_name = Info::create($row, $page, $label_type)->name(); //ucfirst($label_type);
+            $label_name = Info::create($row, $player_name, $page, $label_type)->name(); //ucfirst($label_type);
             $label = "<span class='$bc litebans-label-history litebans-label-$label_type'>$label_name</span>";
 
             $page->print_table_rows($row, array(
                 "type"          => $label,
-                "player"        => $page->get_avatar($page->get_name($row['uuid']), $row['uuid']),
+                "player"        => $page->get_avatar($player_name, $row['uuid']),
                 "executor"      => $page->get_avatar($page->get_banner_name($row), $row['banned_by_uuid']),
                 "reason"        => $page->clean($row['reason']),
                 "date"          => $page->millis_to_date($row['time']),
