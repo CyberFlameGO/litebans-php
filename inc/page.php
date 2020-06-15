@@ -169,6 +169,7 @@ class Page {
             return $rows;
         } catch (PDOException $ex) {
             Settings::handle_error($this->settings, $ex);
+            return array();
         }
     }
 
@@ -194,8 +195,7 @@ class Page {
                 array_push($columns, "CAST($column AS UNSIGNED) AS $column");
             }
         }
-        $selection = implode(",", $columns);
-        return $selection;
+        return implode(",", $columns);
     }
 
     /**
