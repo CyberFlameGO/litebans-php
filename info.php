@@ -41,13 +41,14 @@ abstract class Info {
 
     function history_link($name, $uuid, $args = "") {
         $uuid = $this->page->uuid_undashify($uuid);
-        return "<a href=\"history.php?uuid=$uuid$args\">$name</a>";
+        $href = $this->page->link("history.php?uuid=$uuid$args");
+        return "<a href=\"$href\">$name</a>";
     }
 
     function moderator_avatar() {
         $row = $this->row;
         $banner_name = $this->page->get_banner_name($row);
-        return $this->page->get_avatar($banner_name, $row['banned_by_uuid'], true, $this->history_link($banner_name, $row['banned_by_uuid'], "&staffhistory=1"), $name_left = false);
+        return $this->page->get_avatar($banner_name, $row['banned_by_uuid'], true, $this->history_link($banner_name, $row['banned_by_uuid'], ":issued"), $name_left = false);
     }
 
     function basic_info() {
@@ -78,15 +79,19 @@ class KickInfo extends Info {
 }
 
 // check if info.php is requested, otherwise it's included
-if ((substr($_SERVER['SCRIPT_NAME'], -strlen("info.php"))) !== "info.php") {
-    return;
-}
+//if ((substr($_SERVER['SCRIPT_NAME'], -strlen("info.php"))) !== "info.php" && ((substr($_SERVER['SCRIPT_NAME'], -strlen("index.php"))) !== "index.php")) {
+//    return;
+//}
 
-isset($_GET['type'], $_GET['id']) && is_string($_GET['type']) && is_string($_GET['id']) or die($page->t("error.missing-args"));
+$page = new Page("info");
+$args = $page->args;
 
-$type = $_GET['type'];
-$id = $_GET['id'];
-$page = new Page($type);
+count($args) >= 2 && is_string($args[0]) && is_string($args[1]) or die($page->t("error.missing-args"));
+
+$type = $args[0];
+$id = $args[1];
+
+$page->set_info($page->type_info($type));
 
 ($page->type !== null) or die("Unknown page type requested");
 

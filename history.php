@@ -1,6 +1,5 @@
 <?php
 require_once './inc/page.php';
-require_once './info.php';
 
 class History {
     /**
@@ -69,11 +68,19 @@ class History {
 
 $page = new Page("history");
 
-isset($_GET['uuid']) && is_string($_GET['uuid']) or die($page->t("error.missing-args"));
+$args = $page->args;
 
-$staffhistory = (isset($_GET['staffhistory']) && $_GET['staffhistory'] === "1");
+count($args) > 0 && is_string($args[0]) or die($page->t("error.missing-args"));
 
-$uuid = $page->uuid_dashify($_GET['uuid']);
+//$staffhistory = (count($args) >= 2 && $args[1] === "1");
+$staffhistory=false;
+
+$arg0 = $args[0];
+if (strstr($arg0, ":issued")) {
+    $staffhistory=true;
+    $arg0 = substr($arg0, 0, -strlen(":issued"));
+}
+$uuid = $page->uuid_dashify($arg0);
 $name = $page->get_name($uuid);
 
 $name !== null or die(str_replace("{name}", $name, $page->t("error.name.unseen")));
@@ -99,7 +106,7 @@ if (isset($_GET['from'])) {
     if ($info['type'] !== null) {
         $from_title = $info['title'];
         $from = Page::lc_first($from_title);
-        $from_href = $info['page'];
+        $from_href = $page->link($info['page']);
     }
 }
 
@@ -197,7 +204,7 @@ try {
             $player_name = $page->get_name($row['uuid']);
 
             $label_type = $page->type;
-            $label_name = Info::create($row, $player_name, $page, $label_type)->name(); //ucfirst($label_type);
+            $label_name = $page->t("generic." . $label_type);
             $label = "<span class='$bc litebans-label-history litebans-label-$label_type'>$label_name</span>";
 
             $page->print_table_rows($row, array(
@@ -217,12 +224,18 @@ try {
         // print pager
         if ($page->settings->show_pager) {
             $page->name = "history";
-            $args = "&uuid=$uuid";
-            if ($from !== null) {
-                $args .= "&from=$from";
-            }
+            $target = null;
+
             if ($staffhistory) {
-                $args .= "&staffhistory=1";
+//                $args .= "&staffhistory=1";
+//                $args .= ":issued";
+                $uuid .= ":issued";
+            }
+            $args = "?uuid=$uuid";
+
+            if ($page->settings->simple_urls) {
+                $target = $page->name . "/$uuid";
+                $args = "";
             }
 
             $prevargs = $args;
@@ -233,7 +246,13 @@ try {
                 $prevargs .= "&after=$after";
             }
 
-            $page->print_pager($total, $args, $prevargs);
+            if ($from !== null) {
+                $args .= "&from=$from";
+                $prevargs .= "&from=$from";
+            }
+
+
+            $page->print_pager($total, $args, $prevargs, $target, false);
         }
     } else {
         echo $page->t("history.error.uuid.no-result") . "<br>";

@@ -98,6 +98,13 @@ final class Settings {
         // Enable error pages.
         $this->error_pages = true;
 
+        // Enable simple URLs?
+        // This will convert URLs like "example.com/punishments/bans.php" to "example.com/punishments/bans/"
+        // It will also simplify URL parameters: "example.com/punishments/info.php?type=mute&id=94" -> "example.com/punishments/info/mute/94/"
+        // Your web server must be configured correctly to allow this to work, otherwise you will get a 404 error.
+        // Web server configuration: https://gitlab.com/ruany/litebans-php/-/wikis/Simple-URLs
+        $this->simple_urls = false;
+
         $this->date_month_translations = null;
 
         // If your system locale doesn't automatically translate month names, you can set them manually here.

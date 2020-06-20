@@ -26,13 +26,7 @@ class Page {
         $this->conn = $settings->conn;
         $this->settings = $settings;
         $this->uuid_name_cache = array();
-        $this->page = 1;
-        if (isset($_GET['page'])) {
-            $page = $_GET['page']; // user input
-            if (filter_var($page, FILTER_VALIDATE_INT)) {
-                $this->page = max(0, (int)$page);
-            }
-        }
+
         $this->name = $name;
 
         $this->type = null;
@@ -67,12 +61,48 @@ class Page {
             'kick' => $this->t("generic.kicked.by"),
         );
 
+        $this->table_headers_printed = false;
+        $this->args = array_values($_GET);
+        $this->is_index = ((substr($_SERVER['SCRIPT_NAME'], -strlen("index.php"))) === "index.php");
+        if ($this->is_index) {
+            $this->index_base_path = substr($_SERVER["PHP_SELF"], 0, -strlen("index.php"));
+            if ($settings->simple_urls) {
+                $keys = array_keys($_GET);
+
+                $request_path = $keys[0];
+                $local_path = substr($request_path, strlen($this->index_base_path));
+
+                $this->args = explode("/", substr($local_path, strpos($local_path, "/") + 1));
+            }
+        }
+        $argc = count($this->args);
+        $this->page = 1;
+        $page = "1";
+        if (isset($_GET['page'])) {
+            $page = $_GET['page']; // user input
+        } else {
+            if ($argc > 1) {
+                $page = $this->args[$argc-2];
+            }
+        }
+        if (filter_var($page, FILTER_VALIDATE_INT)) {
+            $this->page = max(0, (int)$page);
+        }
         if ($header) {
             $h = new Header($this);
             $this->header = $h;
             $h->print_header();
         }
-        $this->table_headers_printed = false;
+    }
+
+    public function get_requested_page() {
+        $keys = array_keys($_GET);
+        if (count($keys) == 0) return "";
+
+        $request_path = $keys[0];
+        $local_path = substr($request_path, strlen($this->index_base_path));
+
+        return substr($local_path, 0, strpos($local_path, "/"));
     }
 
     public function t($str) {
@@ -215,7 +245,7 @@ class Page {
         $uuid = $this->uuid_undashify($uuid);
         $src = str_replace('{name}', $name, str_replace('{uuid}', $uuid, $avatar_source));
         if (in_array($name, $this->settings->console_aliases) || $name === $this->settings->console_name) {
-            $src = $this->settings->console_image;
+            $src = $this->resource($this->settings->console_image);
             $name = $this->settings->console_name;
         }
         if ($name_repl !== null) {
@@ -473,7 +503,8 @@ class Page {
                 $a .= " class=\"glyphicon $icon\" aria-hidden=true";
                 $text = "";
             }
-            echo "<td><$a href=\"info.php?type=$type&id=$id\">$text</a></td>";
+            $href = $this->link("info.php?type=$type&id=$id");
+            echo "<td><$a href=\"$href\">$text</a></td>";
         }
         echo "</tr>";
     }
@@ -501,6 +532,7 @@ class Page {
     }
 
     function print_check_form() {
+        $link = $this->link('check.php');
         $table = $this->name;
         echo '
          <div class="row litebans-check">
@@ -513,17 +545,19 @@ class Page {
                     <button type="submit" class="btn btn-primary" style="margin-left: 5px;">' . $this->t("action.check") . '</button>
                  </form>
              </div>
-             <script type="text/javascript">function captureForm(b){var o=$(".litebans-check-output");o.removeClass("show");var x=setTimeout(function(){o.html("<br>")}, 150);$.ajax({type:"GET",url:"check.php?name="+$("#user").val()+"&table=' . $table . '"}).done(function(c){clearTimeout(x);o.html(c);o.addClass("show")});b.preventDefault();return false};</script>
+             <script type="text/javascript">function captureForm(b){var o=$(".litebans-check-output");o.removeClass("show");var x=setTimeout(function(){o.html("<br>")}, 150);$.ajax({type:"GET",url:"' . $link . '?name="+$("#user").val()+"&table=' . $table . '"}).done(function(c){clearTimeout(x);o.html(c);o.addClass("show")});b.preventDefault();return false};</script>
          </div>
          <div class="litebans-check litebans-check-output fade" class="success fade" data-alert="alert"></div>
          <br>
          ';
     }
 
-    function print_pager($total = -1, $args = "", $prevargs = "") {
+    function print_pager($total = -1, $args = "", $prevargs = "", $page = null, $simple=true) {
         if (!$this->settings->show_pager) return;
         $table = $this->table;
-        $page = $this->name . ".php";
+        if ($page === null) {
+            $page = $this->name . ".php";
+        }
 
         if ($total === -1) {
             $where = $this->where_append($this->name === "kicks" ? "" : $this->settings->active_query);
@@ -548,13 +582,21 @@ class Page {
         $next_class = "litebans-" . ($next_active ? "pager-active" : "pager-inactive");
 
         $pager_prev = "<div class=\"litebans-pager litebans-pager-left $prev_class\">«</div>";
-        if ($prev_active) {
-            $pager_prev = "<a href=\"$page?page={$prev}{$prevargs}\">$pager_prev</a>";
+        $pager_next = "<div class=\"litebans-pager litebans-pager-right $next_class\">»</div>";
+
+        if ($simple) {
+            $pager_prev_href = $this->link("$page{$prevargs}&page={$prev}");
+            $pager_next_href = $this->link("$page{$args}&page={$next}");
+        } else {
+            $pager_prev_href = $this->link("$page") . "{$prevargs}&page={$prev}";
+            $pager_next_href = $this->link("$page") . "{$args}&page={$next}";
         }
 
-        $pager_next = "<div class=\"litebans-pager litebans-pager-right $next_class\">»</div>";
+        if ($prev_active) {
+            $pager_prev = "<a href=\"$pager_prev_href\">$pager_prev</a>";
+        }
         if ($next_active) {
-            $pager_next = "<a href=\"$page?page={$next}{$args}\">$pager_next</a>";
+            $pager_next = "<a href=\"$pager_next_href\">$pager_next</a>";
         }
         $pager_count = '<div><div class="litebans-pager-number">' . $this->t("table.pager.number") . ' ' . $cur . '/' . $pages . '</div></div>';
         echo "$pager_prev $pager_next $pager_count";
@@ -570,8 +612,24 @@ class Page {
         include_once './inc/footer.php';
     }
 
-    function autoversion($file) {
-        return "$file?" . filemtime($file);
+    function link($url) {
+        if ($this->settings->simple_urls && $this->is_index) {
+            $url = preg_replace("/\.php/", "", $url, 1);
+            $url = preg_replace("/\?[a-z]+=/", "/", $url);
+            $url = preg_replace("/&[a-z]+=/", "/", $url);
+            $url = $this->index_base_path . $url . "/";
+        }
+        return $url;
+    }
+
+    function resource($file) {
+        if (!file_exists($file)) return $file;
+
+        $mtime = filemtime($file);
+        if ($this->settings->simple_urls && $this->is_index) {
+            $file = $this->index_base_path . $file;
+        }
+        return "$file?" . $mtime;
     }
 
     function table_begin() {

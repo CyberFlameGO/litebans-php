@@ -34,10 +34,15 @@ function __construct($page) {
 
 function navbar($links) {
     echo '<ul class="navbar-nav mr-auto">';
+    $request = $this->page->get_requested_page();
     foreach ($links as $page => $title) {
         $li = "li";
         $class = "nav-item";
-        if ((substr($_SERVER['SCRIPT_NAME'], -strlen($page))) === $page) {
+        if ($this->page->settings->simple_urls) {
+            if ("$request.php" === $page) {
+                $class .= " active navbar-active";
+            }
+        } else if ((substr($_SERVER['SCRIPT_NAME'], -strlen($page))) === $page) {
             $class .= " active navbar-active";
         }
         $li .= " class=\"$class\"";
@@ -47,6 +52,7 @@ function navbar($links) {
             $title .= $this->count[$page];
             $title .= "</span>";
         }
+        $page = $this->page->link($page);
         echo "<$li><a class=\"nav-link\" href=\"$page\">$title</a></li>";
     }
     echo '</ul>';
@@ -62,11 +68,11 @@ $settings = $this->page->settings;
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="LiteBans">
-    <link href="<?php echo $this->page->autoversion('inc/img/favicon.ico'); ?>" rel="shortcut icon">
+    <link href="<?php echo $this->page->resource('inc/img/favicon.ico'); ?>" rel="shortcut icon">
     <!-- CSS -->
-    <link href="<?php echo $this->page->autoversion('inc/css/bootstrap.min.css'); ?>" rel="stylesheet">
-    <link href="<?php echo $this->page->autoversion('inc/css/glyphicons.min.css'); ?>" rel="stylesheet">
-    <link href="<?php echo $this->page->autoversion('inc/css/custom.css'); ?>" rel="stylesheet">
+    <link href="<?php echo $this->page->resource('inc/css/bootstrap.min.css'); ?>" rel="stylesheet">
+    <link href="<?php echo $this->page->resource('inc/css/glyphicons.min.css'); ?>" rel="stylesheet">
+    <link href="<?php echo $this->page->resource('inc/css/custom.css'); ?>" rel="stylesheet">
     <script type="text/javascript">
         function withjQuery(tries, f) {
             if (window.jQuery) f();
