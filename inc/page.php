@@ -82,7 +82,7 @@ class Page {
             $page = $_GET['page']; // user input
         } else {
             if ($argc > 1) {
-                $page = $this->args[$argc-2];
+                $page = $this->args[$argc - 2];
             }
         }
         if (filter_var($page, FILTER_VALIDATE_INT)) {
@@ -552,7 +552,7 @@ class Page {
          ';
     }
 
-    function print_pager($total = -1, $args = "", $prevargs = "", $page = null, $simple=true) {
+    function print_pager($total = -1, $args = "", $prevargs = "", $page = null, $simple = true) {
         if (!$this->settings->show_pager) return;
         $table = $this->table;
         if ($page === null) {
@@ -585,11 +585,11 @@ class Page {
         $pager_next = "<div class=\"litebans-pager litebans-pager-right $next_class\">»</div>";
 
         if ($simple) {
-            $pager_prev_href = $this->link("$page{$prevargs}&page={$prev}");
-            $pager_next_href = $this->link("$page{$args}&page={$next}");
+            $pager_prev_href = $this->append_param($this->link("$page{$prevargs}"), "page={$prev}");
+            $pager_next_href = $this->append_param($this->link("$page{$args}"), "page={$next}");
         } else {
-            $pager_prev_href = $this->link("$page") . "{$prevargs}&page={$prev}";
-            $pager_next_href = $this->link("$page") . "{$args}&page={$next}";
+            $pager_prev_href = $this->append_param(($this->link("$page") . "{$prevargs}"), "page={$prev}");
+            $pager_next_href = $this->append_param(($this->link("$page") . "{$args}"), "page={$next}");
         }
 
         if ($prev_active) {
@@ -610,6 +610,13 @@ class Page {
         echo "<!-- Page generated in $time seconds. -->";
 
         include_once './inc/footer.php';
+    }
+
+    function append_param($url, $param) {
+        if (preg_match("/\?[a-z]+=/", $url)) {
+            return "${url}&${param}";
+        }
+        return "${url}?${param}";
     }
 
     function link($url) {
