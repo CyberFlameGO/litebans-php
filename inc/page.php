@@ -97,7 +97,7 @@ class Page {
 
     public function get_requested_page() {
         $keys = array_keys($_GET);
-        if (count($keys) == 0) return "";
+        if (count($keys) == 0 || !$this->is_index) return "";
 
         $request_path = $keys[0];
         $local_path = substr($request_path, strlen($this->index_base_path));
