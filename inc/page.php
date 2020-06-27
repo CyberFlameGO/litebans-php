@@ -347,7 +347,7 @@ class Page {
      */
     function expiry($row) {
         if ($this->type === "kick") {
-            return "N/A";
+            return $this->t("generic.expired.kick");
         }
         if ($row['until'] <= 0) {
             $until = $this->permanent[$this->type];

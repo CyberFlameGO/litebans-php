@@ -42,6 +42,7 @@ class DefaultLang {
         $array["generic.active"] = "Active";
         $array["generic.inactive"] = "Inactive";
         $array["generic.expired"] = "Expired";
+        $array["generic.expired.kick"] = "N/A";
         $array["generic.player-name"] = "Player";
 
         $array["page.expired.ban"] = '(Unbanned)';
