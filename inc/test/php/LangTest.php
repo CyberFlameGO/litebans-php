@@ -9,7 +9,7 @@ final class LangTest extends TestCase {
             include_once $lang;
             $lang_class = $lang;
             $lang_class = substr($lang_class, 0, strpos($lang_class, ".")); // grab "lang/en_US" from "en_US.utf8.php"
-            $lang_class = substr($lang_class, strlen("lang/")); // grab "en_US" from "lang/en_US"
+            $lang_class = substr($lang_class, strlen("./lang/")); // grab "en_US" from "lang/en_US"
 
             $instance = new $lang_class;
             $this->assertTrue(is_array($instance->array));
