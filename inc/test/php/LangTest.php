@@ -14,14 +14,14 @@ final class LangTest extends TestCase {
             $lang_class = substr($lang_class, strlen("$dir/")); // grab "en_US.utf8.php" from "./lang/en_US.utf8.php"
             $lang_class = substr($lang_class, 0, strpos($lang_class, ".")); // grab "en_US" from "en_US.utf8.php"
 
-            echo("Testing $lang_class ($lang)...");
+            echo("Testing $lang_class ($lang)... ");
             $instance = new $lang_class;
             $this->assertTrue(is_array($instance->array));
 
             $count = sizeof($instance->array);
             $this->assertTrue($count > 0);
 
-            echo "Language $lang_class is valid. $count messages defined.";
+            echo "Success. $count messages defined.\n";
         }
     }
 }
