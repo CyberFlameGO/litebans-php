@@ -4,13 +4,15 @@ use PHPUnit\Framework\TestCase;
 
 final class LangTest extends TestCase {
     public function testLanguages(): void {
-        $langs = glob('./lang/*.php');
+        $dir = './lang';
+        $langs = glob("$dir/*.php");
         foreach ($langs as $lang) {
             include_once $lang;
             $lang_class = $lang;
             $lang_class = substr($lang_class, 0, strpos($lang_class, ".")); // grab "lang/en_US" from "en_US.utf8.php"
-            $lang_class = substr($lang_class, strlen("./lang/")); // grab "en_US" from "lang/en_US"
+            $lang_class = substr($lang_class, strlen("$dir/")); // grab "en_US" from "lang/en_US"
 
+            echo("Testing $lang_class ($lang)...");
             $instance = new $lang_class;
             $this->assertTrue(is_array($instance->array));
 
