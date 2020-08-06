@@ -16,10 +16,11 @@ final class LangTest extends TestCase {
 
             echo("Testing $lang_class ($lang)... ");
             $instance = new $lang_class;
-            $this->assertTrue(is_array($instance->array));
+            $this->assertIsArray($instance->array);
+            $this->assertNotEmpty($instance->array);
+            $this->assertContainsOnly("string", $instance->array);
 
             $count = sizeof($instance->array);
-            $this->assertTrue($count > 0);
 
             echo "Success. $count messages defined.\n";
         }

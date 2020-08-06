@@ -12,7 +12,7 @@ class Page {
         $this->defaultlang = new en_US();
 
         require_once './lang/' . $settings->lang . '.php';
-        $lang_class = substr($settings->lang,0, strpos($settings->lang, ".")); // grab "en_US" from "en_US.utf8"
+        $lang_class = substr($settings->lang, 0, strpos($settings->lang, ".")); // grab "en_US" from "en_US.utf8"
         if ($lang_class !== "en_US" && class_exists($lang_class)) {
             $this->lang = new $lang_class;
         } else {
