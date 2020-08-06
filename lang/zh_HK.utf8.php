@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class zh_HK {
     public function __construct() {
         $array = array();
         $this->array = &$array;
@@ -33,7 +33,7 @@ class Lang {
 
         $array["generic.ipban"] = "IP " . $array["generic.ban"];
         $array["generic.ipmute"] = "IP " . $array["generic.mute"];
-        
+
         $array["generic.permanent"] = "永久";
         $array["generic.permanent.ban"] = $array['generic.permanent'] . ' ' . $array["generic.ban"];
         $array["generic.permanent.mute"] = $array['generic.permanent'] . ' ' . $array["generic.mute"];

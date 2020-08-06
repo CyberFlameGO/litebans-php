@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class sk_SK {
     public function __construct() {
         $array = array();
         $this->array = &$array;

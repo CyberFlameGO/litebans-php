@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class ja_JP {
     public function __construct() {
         $array = array();
         $this->array = &$array;

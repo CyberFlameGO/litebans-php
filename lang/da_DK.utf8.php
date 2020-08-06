@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class da_DK {
     public function __construct() {
         $array = array();
         $this->array = &$array;

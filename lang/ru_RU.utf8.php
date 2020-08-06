@@ -2,7 +2,7 @@
 // Translated by serflash (Alternative version), The creator of the project SimpleCraft.
 // Перевел serflash (Альтернативая версия), Основатель проекта SimpleCraft.
 
-class Lang {
+class ru_RU {
     public function __construct() {
         $array = array();
         $this->array = &$array;

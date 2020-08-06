@@ -3,18 +3,18 @@ require_once './inc/init.php';
 
 class Page {
     public function __construct($name, $header = true) {
-//        ini_set('mbstring.internal_encoding', 'UTF-8');
         ini_set('default_charset', 'utf-8');
         require_once './inc/settings.php';
         $settings = new Settings();
         setlocale(LC_ALL, $settings->lang);
 
         require_once './lang/en_US.utf8.php';
-        $this->defaultlang = new DefaultLang();
+        $this->defaultlang = new en_US();
 
         require_once './lang/' . $settings->lang . '.php';
-        if (class_exists("Lang")) {
-            $this->lang = new Lang();
+        $lang_class = substr($settings->lang,0, strpos($settings->lang, ".")); // grab "en_US" from "en_US.utf8"
+        if ($lang_class !== "en_US" && class_exists($lang_class)) {
+            $this->lang = new $lang_class;
         } else {
             $this->lang = $this->defaultlang;
         }

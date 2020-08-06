@@ -1,5 +1,5 @@
 <?php
-class Lang {
+class es_ES {
     public function __construct() {
         $array = array();
         $this->array = &$array;

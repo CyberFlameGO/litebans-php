@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class cs_CZ {
     public function __construct() {
         $array = array();
         $this->array = &$array;

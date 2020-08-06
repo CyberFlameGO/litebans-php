@@ -1,6 +1,6 @@
 <?php
 
-class Lang {
+class pl_PL {
     public function __construct() {
         $array = array();
         $this->array = &$array;

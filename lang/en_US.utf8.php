@@ -1,6 +1,6 @@
 <?php
 
-class DefaultLang {
+class en_US {
     public function __construct() {
         $array = array();
         $this->array = &$array;
