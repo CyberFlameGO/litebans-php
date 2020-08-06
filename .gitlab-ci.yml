@@ -9,10 +9,13 @@ cache:
 
 before_script:
   - apt-get update -yqq
-  - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev
+  # libzip-dev is required but not included in default template
+  - apt-get install -yqq git libmcrypt-dev libpq-dev libcurl4-gnutls-dev libicu-dev libvpx-dev libjpeg-dev libpng-dev libxpm-dev zlib1g-dev libfreetype6-dev libxml2-dev libexpat1-dev libbz2-dev libgmp3-dev libldap2-dev unixodbc-dev libsqlite3-dev libaspell-dev libsnmp-dev libpcre3-dev libtidy-dev libzip-dev
   # Install PHP extensions
+  # mcrypt broken but included in default template:
   # > $ docker-php-ext-install mbstring mcrypt pdo_pgsql curl json intl gd xml zip bz2 opcache
   # > error: /usr/src/php/ext/mcrypt does not exist
+  # mbstring broken because dependencies not included in default template:
   # > $ docker-php-ext-install mbstring pdo_pgsql curl json intl gd xml zip bz2 opcache
   # > No package 'oniguruma' found
   - docker-php-ext-install pdo_pgsql curl json intl gd xml zip bz2 opcache
