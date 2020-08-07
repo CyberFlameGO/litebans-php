@@ -171,7 +171,7 @@ class Settings {
         }
     }
 
-    protected function connect() {
+    protected function connect($verify=true) {
         $driver = $this->driver;
         $host = $this->host;
         $port = $this->port;
@@ -197,9 +197,11 @@ class Settings {
         try {
             $this->conn = new PDO($dsn, $username, $password, $options);
 
-            $st = $this->conn->query("SELECT * FROM " . $this->table['config'] . " LIMIT 1;");
-            $st->fetch();
-            $st->closeCursor();
+            if ($verify) {
+                $st = $this->conn->query("SELECT * FROM " . $this->table['config'] . " LIMIT 1;");
+                $st->fetch();
+                $st->closeCursor();
+            }
         } catch (PDOException $e) {
             Settings::handle_error($this, $e);
         }

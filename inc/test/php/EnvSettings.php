@@ -1,7 +1,7 @@
 <?php
 
 class EnvSettings extends Settings {
-    public function __construct($connect = true) {
+    public function __construct($connect = true, $verify = false) {
         parent::__construct(false);
         $this->host = getenv("MYSQL_HOST");
         $this->database = getenv("MYSQL_DATABASE");
@@ -11,6 +11,6 @@ class EnvSettings extends Settings {
 
         $this->init_tables();
 
-        if ($connect) $this->connect();
+        if ($connect) $this->connect($verify);
     }
 }
