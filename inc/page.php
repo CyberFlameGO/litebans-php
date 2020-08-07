@@ -29,7 +29,7 @@ class Page {
         }
         $this->conn = $settings->conn;
         $this->settings = $settings;
-        $this->uuid_name_cache = [];
+        $this->uuid_name_cache = array();
 
         $this->name = $name;
 
@@ -40,30 +40,30 @@ class Page {
         $info = $this->type_info($name);
         $this->set_info($info);
 
-        $this->permanent = [
+        $this->permanent = array(
             'ban'  => $this->t("generic.permanent.ban"),
             'mute' => $this->t("generic.permanent.mute"),
             'warn' => $this->t("generic.permanent"),
             'kick' => null,
-        ];
-        $this->expired = [
+        );
+        $this->expired = array(
             'ban'  => $this->t("page.expired.ban"),
             'mute' => $this->t("page.expired.mute"),
             'warn' => $this->t("page.expired.warning"),
             'kick' => null,
-        ];
-        $this->expired_by = [
+        );
+        $this->expired_by = array(
             'ban'  => $this->t("page.expired.ban-by"),
             'mute' => $this->t("page.expired.mute-by"),
             'warn' => $this->t("page.expired.warning"),
             'kick' => null,
-        ];
-        $this->punished_by = [
+        );
+        $this->punished_by = array(
             'ban'  => $this->t("generic.banned.by"),
             'mute' => $this->t("generic.muted.by"),
             'warn' => $this->t("generic.warned.by"),
             'kick' => $this->t("generic.kicked.by"),
-        ];
+        );
 
         $this->table_headers_printed = false;
         $this->args = array_values($_GET);
@@ -125,43 +125,43 @@ class Page {
         switch ($type) {
             case "ban":
             case "bans":
-                return [
+                return array(
                     "type"  => "ban",
                     "table" => $settings->table['bans'],
                     "title" => $this->t("title.bans"),
                     "page"  => "bans.php",
-                ];
+                );
             case "mute":
             case "mutes":
-                return [
+                return array(
                     "type"  => "mute",
                     "table" => $settings->table['mutes'],
                     "title" => $this->t("title.mutes"),
                     "page"  => "mutes.php",
-                ];
+                );
             case "warn":
             case "warnings":
-                return [
+                return array(
                     "type"  => "warn",
                     "table" => $settings->table['warnings'],
                     "title" => $this->t("title.warnings"),
                     "page"  => "warnings.php",
-                ];
+                );
             case "kick":
             case "kicks":
-                return [
+                return array(
                     "type"  => "kick",
                     "table" => $settings->table['kicks'],
                     "title" => $this->t("title.kicks"),
                     "page"  => "kicks.php",
-                ];
+                );
             default:
-                return [
+                return array(
                     "type"  => null,
                     "table" => null,
                     "title" => null,
                     "page"  => null,
-                ];
+                );
         }
     }
 
@@ -203,13 +203,13 @@ class Page {
             return $rows;
         } catch (PDOException $ex) {
             Settings::handle_error($this->settings, $ex);
-            return [];
+            return array();
         }
     }
 
     function get_selection($table, $phpIsBroken = true) {
-        $columns = ["id", "uuid", "reason", "banned_by_name", "banned_by_uuid", "time", "until", "server_origin", "server_scope", "active", "ipban"];
-        $bitColumns = ["active", "ipban"];
+        $columns = array("id", "uuid", "reason", "banned_by_name", "banned_by_uuid", "time", "until", "server_origin", "server_scope", "active", "ipban");
+        $bitColumns = array("active", "ipban");
 
         if ($table === $this->settings->table['warnings']) {
             array_push($columns, "warned");
@@ -486,7 +486,7 @@ class Page {
         }
         if ($print_headers && !$this->table_headers_printed) {
             $headers = array_keys($array);
-            $headers_translated = [];
+            $headers_translated = array();
             foreach ($headers as $header) {
                 if ($header === "executor" && $this->name !== "history") {
                     $header = $this->punished_by[$type];
@@ -607,11 +607,11 @@ class Page {
             $pager_next = "<a href=\"$pager_next_href\">$pager_next</a>";
         }
         $pager_count = '<div><div class="litebans-pager-number">' . $this->t("table.pager.number") . ' ' . $cur . '/' . $pages . '</div></div>';
-        return [
+        return array(
             "prev"  => $pager_prev,
             "next"  => $pager_next,
             "count" => $pager_count,
-        ];
+        );
     }
 
     function print_footer($container_end = true) {

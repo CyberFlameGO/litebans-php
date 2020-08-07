@@ -171,7 +171,7 @@ class Settings {
         }
     }
 
-    protected function connect($verify=true) {
+    protected function connect($verify = true) {
         $driver = $this->driver;
         $host = $this->host;
         $port = $this->port;
@@ -277,7 +277,7 @@ class Settings {
     protected function init_tables() {
         $table_prefix = $this->table_prefix;
         // Internal table names, do not translate.
-        $this->table = [
+        $this->table = array(
             'bans'     => "${table_prefix}bans",
             'mutes'    => "${table_prefix}mutes",
             'warnings' => "${table_prefix}warnings",
@@ -285,6 +285,6 @@ class Settings {
             'history'  => "${table_prefix}history",
             'servers'  => "${table_prefix}servers",
             'config'   => "${table_prefix}config",
-        ];
+        );
     }
 }
