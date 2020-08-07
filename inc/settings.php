@@ -1,6 +1,7 @@
 <?php
+if (class_exists("Settings")) return;
 
-final class Settings {
+class Settings {
     public static $TRUE = "1", $FALSE = "0";
 
     public function __construct($connect = true) {
@@ -161,54 +162,49 @@ final class Settings {
 
         date_default_timezone_set($timezone); // set configured timezone
 
-        $table_prefix = $this->table_prefix;
-
-        // Internal table names, do not translate.
-        $this->table = array(
-            'bans'     => "${table_prefix}bans",
-            'mutes'    => "${table_prefix}mutes",
-            'warnings' => "${table_prefix}warnings",
-            'kicks'    => "${table_prefix}kicks",
-            'history'  => "${table_prefix}history",
-            'servers'  => "${table_prefix}servers",
-            'config'   => "${table_prefix}config",
-        );
+        $this->init_tables();
 
         if ($connect) {
-            $driver = $this->driver;
-            $host = $this->host;
-            $port = $this->port;
-            $database = $this->database;
-            $username = $this->username;
-            $password = $this->password;
-            if ($username === "" && $password === "") {
-                redirect("error/unconfigured.php");
-            }
+            $this->connect();
+        } else {
+            $this->conn = null;
+        }
+    }
 
-            $dsn = "$driver:dbname=$database;host=$host;port=$port";
-            if ($driver === 'mysql') {
-                $dsn .= ';charset=utf8';
-            }
+    protected function connect() {
+        $driver = $this->driver;
+        $host = $this->host;
+        $port = $this->port;
+        $database = $this->database;
+        $username = $this->username;
+        $password = $this->password;
+        if ($username === "" && $password === "") {
+            redirect("error/unconfigured.php");
+        }
 
-            $options = array(
-                PDO::ATTR_TIMEOUT            => 5,
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-            );
+        $dsn = "$driver:dbname=$database;host=$host;port=$port";
+        if ($driver === 'mysql') {
+            $dsn .= ';charset=utf8';
+        }
 
-            try {
-                $this->conn = new PDO($dsn, $username, $password, $options);
+        $options = array(
+            PDO::ATTR_TIMEOUT            => 5,
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
+        );
 
-                $st = $this->conn->query("SELECT * FROM " . $this->table['config'] . " LIMIT 1;");
-                $st->fetch();
-                $st->closeCursor();
-            } catch (PDOException $e) {
-                Settings::handle_error($this, $e);
-            }
-            if ($driver === 'pgsql') {
-                $this->conn->query("SET NAMES 'UTF8';");
-            }
+        try {
+            $this->conn = new PDO($dsn, $username, $password, $options);
+
+            $st = $this->conn->query("SELECT * FROM " . $this->table['config'] . " LIMIT 1;");
+            $st->fetch();
+            $st->closeCursor();
+        } catch (PDOException $e) {
+            Settings::handle_error($this, $e);
+        }
+        if ($driver === 'pgsql') {
+            $this->conn->query("SET NAMES 'UTF8';");
         }
     }
 
@@ -274,5 +270,19 @@ final class Settings {
             $testdump = ob_get_clean();
             die("Assertion failed: gmstrftime(\"%Y-%m-%d %H:%M\",0) != \"1970-01-01 00:00\"<br>Actual result: $testdump");
         }
+    }
+
+    protected function init_tables() {
+        $table_prefix = $this->table_prefix;
+        // Internal table names, do not translate.
+        $this->table = [
+            'bans'     => "${table_prefix}bans",
+            'mutes'    => "${table_prefix}mutes",
+            'warnings' => "${table_prefix}warnings",
+            'kicks'    => "${table_prefix}kicks",
+            'history'  => "${table_prefix}history",
+            'servers'  => "${table_prefix}servers",
+            'config'   => "${table_prefix}config",
+        ];
     }
 }

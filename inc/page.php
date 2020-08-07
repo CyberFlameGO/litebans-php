@@ -2,10 +2,14 @@
 require_once './inc/init.php';
 
 class Page {
-    public function __construct($name, $header = true) {
+    public function __construct($name, $header = true, $connect = true) {
         ini_set('default_charset', 'utf-8');
         require_once './inc/settings.php';
-        $settings = new Settings();
+        if (class_exists("EnvSettings")) {
+            $settings = new EnvSettings($connect);
+        } else {
+            $settings = new Settings($connect);
+        }
         setlocale(LC_ALL, $settings->lang);
 
         require_once './lang/en_US.utf8.php';
@@ -25,7 +29,7 @@ class Page {
         }
         $this->conn = $settings->conn;
         $this->settings = $settings;
-        $this->uuid_name_cache = array();
+        $this->uuid_name_cache = [];
 
         $this->name = $name;
 
@@ -36,30 +40,30 @@ class Page {
         $info = $this->type_info($name);
         $this->set_info($info);
 
-        $this->permanent = array(
+        $this->permanent = [
             'ban'  => $this->t("generic.permanent.ban"),
             'mute' => $this->t("generic.permanent.mute"),
             'warn' => $this->t("generic.permanent"),
             'kick' => null,
-        );
-        $this->expired = array(
+        ];
+        $this->expired = [
             'ban'  => $this->t("page.expired.ban"),
             'mute' => $this->t("page.expired.mute"),
             'warn' => $this->t("page.expired.warning"),
             'kick' => null,
-        );
-        $this->expired_by = array(
+        ];
+        $this->expired_by = [
             'ban'  => $this->t("page.expired.ban-by"),
             'mute' => $this->t("page.expired.mute-by"),
             'warn' => $this->t("page.expired.warning"),
             'kick' => null,
-        );
-        $this->punished_by = array(
+        ];
+        $this->punished_by = [
             'ban'  => $this->t("generic.banned.by"),
             'mute' => $this->t("generic.muted.by"),
             'warn' => $this->t("generic.warned.by"),
             'kick' => $this->t("generic.kicked.by"),
-        );
+        ];
 
         $this->table_headers_printed = false;
         $this->args = array_values($_GET);
@@ -121,43 +125,43 @@ class Page {
         switch ($type) {
             case "ban":
             case "bans":
-                return array(
+                return [
                     "type"  => "ban",
                     "table" => $settings->table['bans'],
                     "title" => $this->t("title.bans"),
                     "page"  => "bans.php",
-                );
+                ];
             case "mute":
             case "mutes":
-                return array(
+                return [
                     "type"  => "mute",
                     "table" => $settings->table['mutes'],
                     "title" => $this->t("title.mutes"),
                     "page"  => "mutes.php",
-                );
+                ];
             case "warn":
             case "warnings":
-                return array(
+                return [
                     "type"  => "warn",
                     "table" => $settings->table['warnings'],
                     "title" => $this->t("title.warnings"),
                     "page"  => "warnings.php",
-                );
+                ];
             case "kick":
             case "kicks":
-                return array(
+                return [
                     "type"  => "kick",
                     "table" => $settings->table['kicks'],
                     "title" => $this->t("title.kicks"),
                     "page"  => "kicks.php",
-                );
+                ];
             default:
-                return array(
+                return [
                     "type"  => null,
                     "table" => null,
                     "title" => null,
                     "page"  => null,
-                );
+                ];
         }
     }
 
@@ -199,13 +203,13 @@ class Page {
             return $rows;
         } catch (PDOException $ex) {
             Settings::handle_error($this->settings, $ex);
-            return array();
+            return [];
         }
     }
 
     function get_selection($table, $phpIsBroken = true) {
-        $columns = array("id", "uuid", "reason", "banned_by_name", "banned_by_uuid", "time", "until", "server_origin", "server_scope", "active", "ipban");
-        $bitColumns = array("active", "ipban");
+        $columns = ["id", "uuid", "reason", "banned_by_name", "banned_by_uuid", "time", "until", "server_origin", "server_scope", "active", "ipban"];
+        $bitColumns = ["active", "ipban"];
 
         if ($table === $this->settings->table['warnings']) {
             array_push($columns, "warned");
@@ -482,7 +486,7 @@ class Page {
         }
         if ($print_headers && !$this->table_headers_printed) {
             $headers = array_keys($array);
-            $headers_translated = array();
+            $headers_translated = [];
             foreach ($headers as $header) {
                 if ($header === "executor" && $this->name !== "history") {
                     $header = $this->punished_by[$type];
@@ -554,6 +558,10 @@ class Page {
 
     function print_pager($total = -1, $args = "", $prevargs = "", $page = null, $simple = true) {
         if (!$this->settings->show_pager) return;
+        echo implode($this->generate_pager($total, $args, $prevargs, $page, $simple));
+    }
+
+    function generate_pager($total = -1, $args = "", $prevargs = "", $page = null, $simple = true) {
         $table = $this->table;
         if ($page === null) {
             $page = $this->name . ".php";
@@ -599,7 +607,11 @@ class Page {
             $pager_next = "<a href=\"$pager_next_href\">$pager_next</a>";
         }
         $pager_count = '<div><div class="litebans-pager-number">' . $this->t("table.pager.number") . ' ' . $cur . '/' . $pages . '</div></div>';
-        echo "$pager_prev $pager_next $pager_count";
+        return [
+            "prev"  => $pager_prev,
+            "next"  => $pager_next,
+            "count" => $pager_count,
+        ];
     }
 
     function print_footer($container_end = true) {

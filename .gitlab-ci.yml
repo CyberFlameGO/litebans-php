@@ -24,19 +24,20 @@ before_script:
   # Install and run Composer
   - curl -sS https://getcomposer.org/installer | php
   - php composer.phar install
-  - php composer.phar require --dev phpunit/phpunit ^9
 
 # Bring in any services we need http://docs.gitlab.com/ee/ci/docker/using_docker_images.html#what-is-a-service
 # See http://docs.gitlab.com/ce/ci/services/README.html for examples.
-services: []
-#  - mysql:5.7
+services:
+  - mariadb:latest
 
 # Set any variables we need
 variables:
   COMPOSER: 'inc/test/composer.json'
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
   MYSQL_DATABASE: mysql_database
-  MYSQL_ROOT_PASSWORD: mysql_strong_password
+  MYSQL_USERNAME: root
+  MYSQL_PASSWORD: mysql_strong_password
+  LITEBANS_TABLE_PREFIX: test_
 
 # Run our tests
 # If Xdebug was installed you can generate a coverage report and see code coverage metrics.
