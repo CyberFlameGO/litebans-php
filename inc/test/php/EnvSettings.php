@@ -3,6 +3,7 @@
 class EnvSettings extends Settings {
     public function __construct($connect = true) {
         parent::__construct(false);
+        $this->host = getenv("MYSQL_HOST");
         $this->database = getenv("MYSQL_DATABASE");
         $this->username = getenv("MYSQL_USERNAME");
         $this->password = getenv("MYSQL_PASSWORD");
