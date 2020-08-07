@@ -34,7 +34,7 @@ services:
 variables:
   COMPOSER: 'inc/test/composer.json'
   # Configure mysql environment variables (https://hub.docker.com/r/_/mysql/)
-  MYSQL_HOST: 'mysql'
+  MYSQL_HOST: mariadb
   MYSQL_DATABASE: mysql_database
   MYSQL_USERNAME: root
   MYSQL_PASSWORD: mysql_strong_password
