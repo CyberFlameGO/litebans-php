@@ -621,7 +621,7 @@ class Page {
         $time = microtime(true) - $this->time;
         echo "<!-- Page generated in $time seconds. -->";
 
-        include_once './inc/footer.php';
+        require_once './inc/footer.php';
     }
 
     function append_param($url, $param) {

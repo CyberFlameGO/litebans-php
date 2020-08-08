@@ -8,7 +8,7 @@ if ($page->settings->simple_urls && count($_GET) !== 0) {
     if ($target !== "index" && strlen($target) <= 16 && preg_match("/^[a-z]+$/", $target)) {
         $local_script = "./${target}.php";
         if (file_exists($local_script)) {
-            include_once $local_script;
+            require_once $local_script;
             return;
         }
     }

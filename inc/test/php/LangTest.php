@@ -9,7 +9,7 @@ final class LangTest extends TestCase {
         $dir = './lang';
         $langs = glob("$dir/*.php");
         foreach ($langs as $lang) {
-            include_once $lang;
+            require_once $lang;
             $lang_class = $lang;
             $lang_class = substr($lang_class, strlen("$dir/")); // grab "en_US.utf8.php" from "./lang/en_US.utf8.php"
             $lang_class = substr($lang_class, 0, strpos($lang_class, ".")); // grab "en_US" from "en_US.utf8.php"

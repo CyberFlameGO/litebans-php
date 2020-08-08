@@ -2,7 +2,7 @@
 
 use PHPUnit\Framework\TestCase;
 
-include_once './inc/page.php';
+require_once './inc/page.php';
 
 final class PageTest extends TestCase {
     public function testBansPagerHTML(): void {
