@@ -663,16 +663,6 @@ class Page {
     }
 
     /**
-     * lcfirst is only supported in PHP >= 5.3
-     * @param $str
-     * @return string
-     */
-    static function lc_first($str) {
-        $str[0] = strtolower($str[0]);
-        return (string)$str;
-    }
-
-    /**
      * @param $where
      * @return string
      */

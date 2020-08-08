@@ -105,7 +105,7 @@ if (isset($_GET['from'])) {
     $info = $page->type_info($_GET['from']);
     if ($info['type'] !== null) {
         $from_title = $info['title'];
-        $from = Page::lc_first($from_title);
+        $from = lcfirst($from_title);
         $from_href = $page->link($info['page']);
     }
 }
