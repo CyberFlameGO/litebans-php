@@ -8,12 +8,21 @@ final class PageTest extends TestCase {
     public function testBansPagerHTML(): void {
         $page = new Page("bans", false, false);
 
+        $currentPage = 1;
+        $page->page = $currentPage;
         $pager = $page->generate_pager(10);
         $this->assertIsArray($pager);
         $this->assertCount(3, $pager);
         $this->assertEquals('<div class="litebans-pager litebans-pager-left litebans-pager-inactive">«</div>', $pager["prev"]);
         $this->assertEquals('<a href="bans.php?page=2"><div class="litebans-pager litebans-pager-right litebans-pager-active">»</div></a>', $pager["next"]);
-        $this->assertEquals('<div><div class="litebans-pager-number">Page 1/2</div></div>', $pager["count"]);
+        $this->assertEquals("<div><div class=\"litebans-pager-number\">Page $currentPage/2</div></div>", $pager["count"]);
+
+        $currentPage++;
+        $page->page = $currentPage;
+        $pager = $page->generate_pager(10);
+        $this->assertIsArray($pager);
+        $this->assertCount(3, $pager);
+        $this->assertEquals("<div><div class=\"litebans-pager-number\">Page $currentPage/2</div></div>", $pager["count"]);
     }
 
     public function testHistoryPagerHTML(): void {
@@ -27,7 +36,7 @@ final class PageTest extends TestCase {
         ob_start();
         require_once './history.php';
         $output = ob_get_clean();
-        $historyPagerAssertion = '<div class="litebans-pager litebans-pager-left litebans-pager-inactive">«</div><div class="litebans-pager litebans-pager-right litebans-pager-inactive">»</div><div><div class="litebans-pager-number">Page 1/1</div></div>';
-        $this->assertStringContainsString($historyPagerAssertion, $output);
+        $historyPager = '<div class="litebans-pager litebans-pager-left litebans-pager-inactive">«</div><div class="litebans-pager litebans-pager-right litebans-pager-inactive">»</div><div><div class="litebans-pager-number">Page 1/1</div></div>';
+        $this->assertStringContainsString($historyPager, $output);
     }
 }
