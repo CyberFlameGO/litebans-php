@@ -23,6 +23,7 @@
 
 /* navbar */
 .navbar {
+    position: static;
     font-weight: bold;
 }
 
