@@ -552,7 +552,7 @@ class Page {
              <script type="text/javascript">function captureForm(b){var o=$(".litebans-check-output");o.removeClass("show");var x=setTimeout(function(){o.html("<br>")}, 150);$.ajax({type:"GET",url:"' . $link . '?name="+$("#user").val()+"&table=' . $table . '"}).done(function(c){clearTimeout(x);o.html(c);o.addClass("show")});b.preventDefault();return false};</script>
          </div>
          <div class="litebans-check litebans-check-output fade" class="success fade" data-alert="alert"></div>
-         <br>
+         <p class="noselect"></p>
          ';
     }
 
