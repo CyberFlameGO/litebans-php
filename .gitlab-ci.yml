@@ -3,7 +3,6 @@ image: php:latest
 # Select what we should cache between builds
 cache:
   paths:
-    - inc/test/vendor/
     - vendor/
 
 before_script:
