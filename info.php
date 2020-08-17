@@ -48,19 +48,23 @@ abstract class Info {
     function moderator_avatar() {
         $row = $this->row;
         $banner_name = $this->page->get_banner_name($row);
-        return $this->page->get_avatar($banner_name, $row['banned_by_uuid'], true, $this->history_link($banner_name, $row['banned_by_uuid'], ":issued"), $name_left = false);
+        return $this->page->get_avatar($banner_name, $row['banned_by_uuid'], true, $this->history_link($banner_name, $row['banned_by_uuid'], ':issued'), $name_left = false);
     }
 
     function basic_info() {
-        return array(
-            "table.player"        => function (Info $info) { return $info->punished_avatar(); },
-            "table.executor"      => function (Info $info) { return $info->moderator_avatar(); },
-            "table.reason"        => function (Info $info) { return $info->page->clean($info->row['reason']); },
-            "table.date"          => function (Info $info) { return $info->page->millis_to_date($info->row['time']); },
-            "table.expires"       => function (Info $info) { return $info->page->expiry($info->row); },
-            "table.server.scope"  => function (Info $info) { return $info->page->server($info->row); },
-            "table.server.origin" => function (Info $info) { return $info->page->server($info->row, "server_origin"); },
+        $settings = $this->page->settings;
+        $table = array(
+            'table.player'        => function (Info $info) { return $info->punished_avatar(); },
+            'table.executor'      => function (Info $info) { return $info->moderator_avatar(); },
+            'table.reason'        => function (Info $info) { return $info->page->clean($info->row['reason']); },
+            'table.date'          => function (Info $info) { return $info->page->millis_to_date($info->row['time']); },
+            'table.expires'       => function (Info $info) { return $info->page->expiry($info->row); },
+            'table.server.scope'  => function (Info $info) { return $info->page->server($info->row); },
+            'table.server.origin' => function (Info $info) { return $info->page->server($info->row, "server_origin"); },
         );
+        if (!$settings->info_show_server_scope) unset($table['table.server.scope']);
+        if (!$settings->info_show_server_origin) unset($table['table.server.origin']);
+        return $table;
     }
 }
 
@@ -73,7 +77,7 @@ class WarnInfo extends Info {}
 class KickInfo extends Info {
     function basic_info() {
         $array = parent::basic_info();
-        unset($array["table.expires"]); // kicks do not expire
+        unset($array['table.expires']); // kicks do not expire
         return $array;
     }
 }

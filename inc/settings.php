@@ -36,6 +36,12 @@ class Settings {
         // Show server origin column?
         $this->show_server_origin = false;
 
+        // Show server scope column in info.php?
+        $this->info_show_server_scope = false;
+
+        // Show server origin column in info.php?
+        $this->info_show_server_origin = true;
+
         // Show inactive bans? Removed bans will show (Unbanned), mutes will show (Unmuted), warnings will show (Expired).
         $this->show_inactive_bans = true;
 
