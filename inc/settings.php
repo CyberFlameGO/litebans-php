@@ -30,14 +30,6 @@ class Settings {
         // $this->name_link = 'https://example.com';
         $this->name_link = 'index.php';
 
-        // Here you can customize colors for the Bootstrap 4 theme that you are using.
-        // Bootstrap 4 themes have four sets of colors: primary, secondary, light and dark.
-        // Navbar classes: navbar-light, navbar-dark, bg-primary, bg-secondary, bg-light, bg-dark
-        // Badge (label) classes: badge, badge-pill, badge-primary, badge-secondary, badge-light, badge-dark
-        $this->navbar_classes = 'navbar-dark bg-primary';
-        $this->badge_classes = 'badge-pill badge-secondary';
-        $this->info_badge_classes = 'badge';
-
         // Show server scope column?
         $this->show_server_scope = false;
 
@@ -50,8 +42,14 @@ class Settings {
         // Show silent bans?
         $this->show_silent_bans = true;
 
-        // Show pager? This allows users to page through the list of bans.
-        $this->show_pager = true;
+        // https://secure.php.net/manual/en/timezones.php
+        // Example: "Europe/London"
+        $this->timezone = "UTC";
+
+        // The date format can be changed here.
+        // https://secure.php.net/manual/en/function.strftime.php
+        // Example output of default format: July 2, 2015, 09:19; August 4, 2016, 18:37
+        $this->date_format = '%B %d, %Y, %H:%M';
 
         // Amount of bans/mutes/warnings to show on each page
         $this->limit_per_page = 10;
@@ -81,30 +79,32 @@ class Settings {
         // If enabled, names will be shown below avatars instead of being shown next to them.
         $this->avatar_names_below = true;
 
-        // If enabled, the total amount of bans, mutes, warnings, and kicks will be shown next to the buttons in the header.
-        $this->header_show_totals = true;
-
-        // The date format can be changed here.
-        // https://secure.php.net/manual/en/function.strftime.php
-        // Example output of default format: July 2, 2015, 09:19; August 4, 2016, 18:37
-        $this->date_format = '%B %d, %Y, %H:%M';
-
-        // https://secure.php.net/manual/en/timezones.php
-        // Example: "Europe/London"
-        $timezone = "UTC";
-
-        // Enable PHP error reporting.
-        $this->error_reporting = true;
-
-        // Enable error pages.
-        $this->error_pages = true;
-
         // Enable simple URLs?
         // This will convert URLs like "example.com/punishments/bans.php" to "example.com/punishments/bans/"
         // It will also simplify URL parameters: "example.com/punishments/info.php?type=mute&id=94" -> "example.com/punishments/info/mute/94/"
         // Your web server must be configured correctly to allow this to work, otherwise you will get a 404 error.
         // Web server configuration: https://gitlab.com/ruany/litebans-php/-/wikis/Simple-URLs
         $this->simple_urls = false;
+
+        // Here you can customize colors for the Bootstrap 4 theme that you are using.
+        // Bootstrap 4 themes have four sets of colors: primary, secondary, light and dark.
+        // Navbar classes: navbar-light, navbar-dark, bg-primary, bg-secondary, bg-light, bg-dark
+        // Badge (label) classes: badge, badge-pill, badge-primary, badge-secondary, badge-light, badge-dark
+        $this->navbar_classes = 'navbar-dark bg-primary';
+        $this->badge_classes = 'badge-pill badge-secondary';
+        $this->info_badge_classes = 'badge';
+
+        // If enabled, the total amount of bans, mutes, warnings, and kicks will be shown next to the buttons in the header.
+        $this->header_show_totals = true;
+
+        // Show pager? This allows users to page through the list of bans.
+        $this->show_pager = true;
+
+        // Enable PHP error reporting.
+        $this->error_reporting = true;
+
+        // Enable error pages.
+        $this->error_pages = true;
 
         $this->date_month_translations = null;
 
@@ -159,8 +159,6 @@ class Settings {
         }
 
         $this->test_strftime();
-
-        date_default_timezone_set($timezone); // set configured timezone
 
         $this->init_tables();
 
@@ -272,6 +270,7 @@ class Settings {
             $testdump = ob_get_clean();
             die("Assertion failed: gmstrftime(\"%Y-%m-%d %H:%M\",0) != \"1970-01-01 00:00\"<br>Actual result: $testdump");
         }
+        date_default_timezone_set($this->timezone); // set configured timezone
     }
 
     protected function init_tables() {
