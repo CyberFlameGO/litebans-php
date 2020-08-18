@@ -225,6 +225,7 @@ try {
         if ($page->settings->show_pager) {
             $page->name = "history";
             $target = null;
+            $uuid = $page->uuid_undashify($uuid);
 
             if ($staffhistory) {
 //                $args .= "&staffhistory=1";
@@ -234,7 +235,7 @@ try {
             $args = "?uuid=$uuid";
 
             if ($page->settings->simple_urls) {
-                $target = $page->name . "/$uuid";
+                $target = $page->name . "/" . $uuid;
                 $args = "";
             }
 
