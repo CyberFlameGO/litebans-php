@@ -13,7 +13,7 @@ final class PageTest extends TestCase {
             $pager = $page->generate_pager(10);
             $this->assertIsArray($pager);
             $this->assertCount(3, $pager);
-            $this->assertEquals("Page $currentPage/2", $pager["count"]);
+            $this->assertStringContainsString("Page $currentPage/2", $pager["count"]);
         }
     }
 
