@@ -589,9 +589,6 @@ class Page {
         $prev_class = "litebans-" . ($prev_active ? "pager-active" : "pager-inactive");
         $next_class = "litebans-" . ($next_active ? "pager-active" : "pager-inactive");
 
-        $pager_prev = "<div class=\"litebans-pager litebans-pager-left $prev_class\">«</div>";
-        $pager_next = "<div class=\"litebans-pager litebans-pager-right $next_class\">»</div>";
-
         if ($simple) {
             $pager_prev_href = $this->append_param($this->link("$page{$prevargs}"), "page={$prev}");
             $pager_next_href = $this->append_param($this->link("$page{$args}"), "page={$next}");
@@ -600,13 +597,10 @@ class Page {
             $pager_next_href = $this->append_param(($this->link("$page") . "{$args}"), "page={$next}");
         }
 
-        if ($prev_active) {
-            $pager_prev = "<a href=\"$pager_prev_href\">$pager_prev</a>";
-        }
-        if ($next_active) {
-            $pager_next = "<a href=\"$pager_next_href\">$pager_next</a>";
-        }
-        $pager_count = '<div><div class="litebans-pager-number">' . $this->t("table.pager.number") . ' ' . $cur . '/' . $pages . '</div></div>';
+        $pager_prev = "<a class=\"litebans-pager litebans-pager-left $prev_class\" href=\"$pager_prev_href\">«</a>";
+        $pager_next = "<a class=\"litebans-pager litebans-pager-right $next_class\" href=\"$pager_next_href\">»</a>";
+
+        $pager_count = '<div class="litebans-pager-number">' . $this->t("table.pager.number") . ' ' . $cur . '/' . $pages . '</div>';
         return array(
             "prev"  => $pager_prev,
             "next"  => $pager_next,
@@ -673,4 +667,6 @@ class Page {
             return "WHERE ";
         }
     }
+
+
 }

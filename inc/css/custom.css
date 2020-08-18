@@ -103,7 +103,9 @@ tr.hover {
 }
 
 .litebans-pager-inactive {
-    color: transparent;
+    visibility: hidden;
+    pointer-events: none;
+    cursor: default;
 }
 
 /* index.php */
