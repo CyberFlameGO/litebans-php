@@ -13,11 +13,17 @@ function __construct($page) {
         $t_warnings = $t['warnings'];
         $t_kicks = $t['kicks'];
         try {
-            $st = $page->conn->query("SELECT
-            (SELECT COUNT(*) FROM $t_bans),
-            (SELECT COUNT(*) FROM $t_mutes),
-            (SELECT COUNT(*) FROM $t_warnings),
-            (SELECT COUNT(*) FROM $t_kicks)");
+            $sql = "SELECT
+            (SELECT id FROM $t_bans ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM $t_mutes ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM $t_warnings ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM $t_kicks ORDER BY id DESC LIMIT 1)";
+
+            if ($page->settings->verify) {
+                $sql .= ",(SELECT id FROM " . $t['config'] . " LIMIT 1)";
+            }
+            $st = $page->conn->query($sql);
+
             ($row = $st->fetch(PDO::FETCH_NUM)) or die('Failed to fetch row counts.');
             $st->closeCursor();
             $this->count = array(

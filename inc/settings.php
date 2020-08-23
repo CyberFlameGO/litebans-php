@@ -1,5 +1,4 @@
 <?php
-if (class_exists("Settings")) return;
 
 class Settings {
     public static $TRUE = "1", $FALSE = "0";
@@ -163,6 +162,7 @@ class Settings {
         if (!$this->show_silent_bans) {
             $this->active_query = self::append_query($this->active_query, "silent=" . Settings::$FALSE);
         }
+        $this->verify = false;
 
         $this->test_strftime();
 
@@ -176,6 +176,7 @@ class Settings {
     }
 
     protected function connect($verify = true) {
+        $this->verify = $verify;
         $driver = $this->driver;
         $host = $this->host;
         $port = $this->port;
@@ -201,7 +202,7 @@ class Settings {
         try {
             $this->conn = new PDO($dsn, $username, $password, $options);
 
-            if ($verify) {
+            if (!$this->header_show_totals && $verify) {
                 $st = $this->conn->query("SELECT * FROM " . $this->table['config'] . " LIMIT 1;");
                 $st->fetch();
                 $st->closeCursor();
