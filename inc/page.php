@@ -293,10 +293,8 @@ class Page {
      * @return null|string
      */
     function get_name($uuid) {
-        if ($uuid === null || $uuid === "" || strrpos($uuid, "#", -strlen($uuid)) !== false) return null;
-        if (in_array($uuid, $this->settings->console_aliases)) {
-            return $this->settings->console_name;
-        }
+        if ($uuid === null || $uuid === "" || $uuid[0] === '#') return null;
+        if (in_array($uuid, $this->settings->console_aliases)) return $this->settings->console_name;
         if (array_key_exists($uuid, $this->uuid_name_cache)) return $this->uuid_name_cache[$uuid];
 
         $result = null;
