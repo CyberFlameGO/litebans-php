@@ -1,7 +1,7 @@
 <?php
 require_once './inc/page.php';
 
-$page = new Page("index");
+$page = new Page("index",false);
 
 if ($page->settings->simple_urls && count($_GET) !== 0) {
     $target = $page->get_requested_page();
@@ -13,6 +13,7 @@ if ($page->settings->simple_urls && count($_GET) !== 0) {
         }
     }
 }
+$page->header->print_header();
 
 $page->print_title();
 ?>

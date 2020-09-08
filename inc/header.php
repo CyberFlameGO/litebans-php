@@ -6,36 +6,6 @@ class Header {
  */
 function __construct($page) {
     $this->page = $page;
-    if ($page->settings->header_show_totals) {
-        $t = $page->settings->table;
-        $t_bans = $t['bans'];
-        $t_mutes = $t['mutes'];
-        $t_warnings = $t['warnings'];
-        $t_kicks = $t['kicks'];
-        try {
-            $sql = "SELECT
-            (SELECT id FROM $t_bans ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM $t_mutes ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM $t_warnings ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM $t_kicks ORDER BY id DESC LIMIT 1)";
-
-            if ($page->settings->verify) {
-                $sql .= ",(SELECT id FROM " . $t['config'] . " LIMIT 1)";
-            }
-            $st = $page->conn->query($sql);
-
-            ($row = $st->fetch(PDO::FETCH_NUM)) or die('Failed to fetch row counts.');
-            $st->closeCursor();
-            $this->count = array(
-                'bans.php'     => $row[0],
-                'mutes.php'    => $row[1],
-                'warnings.php' => $row[2],
-                'kicks.php'    => $row[3],
-            );
-        } catch (PDOException $ex) {
-            Settings::handle_error($page->settings, $ex);
-        }
-    }
 }
 
 function navbar($links) {
@@ -65,7 +35,38 @@ function navbar($links) {
 }
 
 function print_header() {
-$settings = $this->page->settings;
+$page = $this->page;
+$settings = $page->settings;
+if ($page->settings->header_show_totals) {
+    $t = $page->settings->table;
+    $t_bans = $t['bans'];
+    $t_mutes = $t['mutes'];
+    $t_warnings = $t['warnings'];
+    $t_kicks = $t['kicks'];
+    try {
+        $sql = "SELECT
+            (SELECT id FROM $t_bans ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM $t_mutes ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM $t_warnings ORDER BY id DESC LIMIT 1),
+            (SELECT id FROM $t_kicks ORDER BY id DESC LIMIT 1)";
+
+        if ($page->settings->verify) {
+            $sql .= ",(SELECT id FROM " . $t['config'] . " LIMIT 1)";
+        }
+        $st = $page->conn->query($sql);
+
+        ($row = $st->fetch(PDO::FETCH_NUM)) or die('Failed to fetch row counts.');
+        $st->closeCursor();
+        $this->count = array(
+            'bans.php'     => $row[0],
+            'mutes.php'    => $row[1],
+            'warnings.php' => $row[2],
+            'kicks.php'    => $row[3],
+        );
+    } catch (PDOException $ex) {
+        Settings::handle_error($page->settings, $ex);
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">

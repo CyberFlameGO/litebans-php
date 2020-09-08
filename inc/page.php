@@ -24,9 +24,6 @@ class Page {
             $this->lang = $this->defaultlang;
         }
 
-        if ($header) {
-            require_once './inc/header.php';
-        }
         $this->conn = $settings->conn;
         $this->settings = $settings;
         $this->uuid_name_cache = array();
@@ -92,10 +89,11 @@ class Page {
         if (filter_var($page, FILTER_VALIDATE_INT)) {
             $this->page = max(0, (int)$page);
         }
+
+        require_once './inc/header.php';
+        $this->header = new Header($this);
         if ($header) {
-            $h = new Header($this);
-            $this->header = $h;
-            $h->print_header();
+            $this->header->print_header();
         }
     }
 
