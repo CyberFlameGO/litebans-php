@@ -70,10 +70,14 @@ class Page {
             if ($settings->simple_urls) {
                 $keys = array_keys($_GET);
 
-                $request_path = $keys[0];
-                $local_path = substr($request_path, strlen($this->index_base_path));
+                if (count($keys) > 0) {
+                    $request_path = $keys[0];
+                    $local_path = substr($request_path, strlen($this->index_base_path));
 
-                $this->args = explode("/", substr($local_path, strpos($local_path, "/") + 1));
+                    $this->args = explode("/", substr($local_path, strpos($local_path, "/") + 1));
+                } else {
+                    $this->args = array();
+                }
             }
         }
         $argc = count($this->args);
