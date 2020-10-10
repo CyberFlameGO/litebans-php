@@ -19,7 +19,7 @@
             }
             $phpini = php_ini_loaded_file();
 
-            echo "These extensions can be enabled in php.ini.<br><br>";
+            echo "<br>These extensions can be enabled in php.ini.<br><br>";
             echo "php.ini location: <a class=\"text-info\">" . $phpini . "</a><br>";
             ?>
         </div>
