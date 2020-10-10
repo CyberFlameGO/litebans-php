@@ -15,11 +15,11 @@
             The following PHP extensions are required by litebans-php but were not found:
             <br>
             <?php if (!extension_loaded("pdo_mysql")) {
-                echo "- <a class=\"text-danger\">pdo_mysql</a>";
+                echo "- <a class=\"text-danger\">pdo_mysql</a><br>";
             }
             $phpini = php_ini_loaded_file();
 
-            echo "<br>These extensions can be enabled in php.ini.<br><br>";
+            echo "These extensions can be enabled in php.ini.<br><br>";
             echo "php.ini location: <a class=\"text-info\">" . $phpini . "</a><br>";
             ?>
         </div>
