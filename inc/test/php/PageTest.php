@@ -20,7 +20,7 @@ final class PageTest extends TestCase {
     public function testHistoryPagerHTML(): void {
         $page = new Page("test", false);
         foreach (explode("\n", file_get_contents("./inc/test/php/test_setup.sql")) as $query) {
-            if (strlen($query) > 0) {
+            if ($query !== '') {
                 $page->conn->query($query);
             }
         }

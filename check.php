@@ -38,7 +38,7 @@ class Check {
                     redirect($page->link("info.php?id=$name&type=$type"));
                     return;
                 }
-                $name = htmlspecialchars($name, ENT_QUOTES, 'UTF-8');
+                $name = htmlspecialchars($name, ENT_QUOTES);
                 $this->println(str_replace("{name}", $name, $page->t("error.name.unseen")));
                 return;
             }

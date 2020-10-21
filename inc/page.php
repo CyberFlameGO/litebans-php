@@ -214,8 +214,8 @@ class Page {
         $bitColumns = array("active", "ipban");
 
         if ($table === $this->settings->table['warnings']) {
-            array_push($columns, "warned");
-            array_push($bitColumns, "warned");
+            $columns[] = "warned";
+            $bitColumns[] = "warned";
         }
 
         if ($table !== $this->settings->table['kicks']) {
@@ -228,7 +228,7 @@ class Page {
         if ($phpIsBroken === true) {
             foreach ($bitColumns as $column) {
                 unset($columns[$column]);
-                array_push($columns, "CAST($column AS UNSIGNED) AS $column");
+                $columns[] = "CAST($column AS UNSIGNED) AS $column";
             }
         }
         return implode(",", $columns);
@@ -249,7 +249,7 @@ class Page {
         }
 
         $uuid = $this->uuid_undashify($uuid);
-        $src = str_replace('{name}', $name, str_replace('{uuid}', $uuid, $avatar_source));
+        $src = str_replace(array('{uuid}', '{name}'), array($uuid, $name), $avatar_source);
         if (in_array($name, $this->settings->console_aliases) || $name === $this->settings->console_name) {
             $src = $this->resource($this->settings->console_image);
             $name = $this->settings->console_name;
@@ -324,7 +324,7 @@ class Page {
         if (strstr($text, "\xa7") || strstr($text, "&")) {
             $text = preg_replace("/(?i)(\x{00a7}|&)[0-9A-FK-OR]/u", "", $text);
         }
-        $text = htmlspecialchars($text, ENT_QUOTES, "UTF-8");
+        $text = htmlspecialchars($text, ENT_QUOTES);
         if (strstr($text, "\n")) {
             $text = preg_replace("/\n/", "<br>", $text);
         }
@@ -493,7 +493,7 @@ class Page {
                 } else {
                     $header = $this->t("table.$header");
                 }
-                array_push($headers_translated, $header);
+                $headers_translated[] = $header;
             }
             $this->table_print_headers($headers_translated);
             $this->table_headers_printed = true;
@@ -663,10 +663,7 @@ class Page {
     public function where_append($where) {
         if ($where !== "") {
             return "$where AND ";
-        } else {
-            return "WHERE ";
         }
+        return "WHERE ";
     }
-
-
 }

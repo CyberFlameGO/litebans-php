@@ -29,7 +29,7 @@ class History {
         if ($st->execute()) {
             while ($row = $st->fetch(PDO::FETCH_ASSOC)) {
                 $row['__table__'] = $type;
-                array_push($array, $row);
+                $array[] = $row;
             }
         }
         $st->closeCursor();
@@ -173,7 +173,7 @@ try {
         foreach ($all as $row) {
             $i++;
             if ($i > $limit) break;
-            array_push($trim, $row);
+            $trim[] = $row;
         }
         $all = $trim;
     }

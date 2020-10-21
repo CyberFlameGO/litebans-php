@@ -25,7 +25,7 @@
 
                     if ($error !== false) {
                         // sanitize user input
-                        $error = htmlspecialchars($error, ENT_QUOTES, "UTF-8");
+                        $error = htmlspecialchars($error, ENT_QUOTES);
 
                         echo $error;
                     }
