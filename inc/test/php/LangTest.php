@@ -15,13 +15,13 @@ final class LangTest extends TestCase {
             $lang_class = substr($lang_class, 0, strpos($lang_class, ".")); // grab "en_US" from "en_US.utf8.php"
 
             echo("Testing $lang_class ($lang)... ");
+
             $instance = new $lang_class;
-            $this->assertIsArray($instance->array);
-            $this->assertNotEmpty($instance->array);
-            $this->assertContainsOnly("string", $instance->array);
+            self::assertIsArray($instance->array);
+            self::assertNotEmpty($instance->array);
+            self::assertContainsOnly("string", $instance->array);
 
-            $count = sizeof($instance->array);
-
+            $count = count($instance->array);
             echo "Success. $count messages defined.\n";
         }
     }

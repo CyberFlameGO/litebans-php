@@ -11,9 +11,9 @@ final class PageTest extends TestCase {
         foreach (range(1, 2) as $currentPage) {
             $page->page = $currentPage;
             $pager = $page->generate_pager(10);
-            $this->assertIsArray($pager);
-            $this->assertCount(3, $pager);
-            $this->assertStringContainsString("Page $currentPage/2", $pager["count"]);
+            self::assertIsArray($pager);
+            self::assertCount(3, $pager);
+            self::assertStringContainsString("Page $currentPage/2", $pager["count"]);
         }
     }
 
@@ -29,6 +29,6 @@ final class PageTest extends TestCase {
         require_once './history.php';
         $output = ob_get_clean();
         $historyPager = 'Page 1/1';
-        $this->assertStringContainsString($historyPager, $output);
+        self::assertStringContainsString($historyPager, $output);
     }
 }
