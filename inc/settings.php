@@ -208,7 +208,7 @@ class Settings {
             Settings::handle_error($this, $e);
         }
         if ($driver === 'pgsql') {
-            $this->conn->query("SET NAMES 'UTF8';");
+            $this->conn->exec("SET NAMES 'UTF8';");
         }
     }
 
@@ -223,7 +223,7 @@ class Settings {
      * @param $settings Settings
      * @param $e Exception
      */
-    static function handle_error($settings, $e) {
+    static function handle_error($settings, Exception $e) {
         $message = $e->getMessage();
         if ($settings->error_pages) {
             if (strstr($message, "Access denied for user")) {
@@ -249,9 +249,8 @@ class Settings {
         }
         if ($settings->error_reporting) {
             die("Database error: $message");
-        } else {
-            die("Database error");
         }
+        die("Database error");
     }
 
     private function test_strftime() {
@@ -279,8 +278,8 @@ class Settings {
 
     protected function init_tables() {
         $this->table = array();
-        array_map(function ($t) {
+        foreach (array('bans', 'mutes', 'warnings', 'kicks', 'history', 'servers', 'config') as $t) {
             $this->table[$t] = $this->table_prefix . $t;
-        }, array('bans', 'mutes', 'warnings', 'kicks', 'history', 'servers', 'config'));
+        }
     }
 }
