@@ -136,6 +136,8 @@ class Settings {
 
         /** Don't modify anything here unless you know what you're doing **/
 
+        date_default_timezone_set($this->timezone);
+
         if ($this->error_reporting) {
             error_reporting(E_ALL);
             ini_set("display_errors", 1);
@@ -254,9 +256,6 @@ class Settings {
     }
 
     private function test_strftime() {
-        // If you modify this function, you may get an "Assertion failed" error.
-        date_default_timezone_set("UTC"); // temporarily set UTC timezone for testing purposes
-
         $test = gmstrftime($this->date_format, 0);
         if ($test == false) {
             ob_start();
@@ -272,7 +271,6 @@ class Settings {
             $testdump = ob_get_clean();
             die("Assertion failed: gmstrftime(\"%Y-%m-%d %H:%M\",0) != \"1970-01-01 00:00\"<br>Actual result: $testdump");
         }
-        date_default_timezone_set($this->timezone); // set configured timezone
     }
 
 
