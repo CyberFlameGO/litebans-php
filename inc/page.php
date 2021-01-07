@@ -14,14 +14,12 @@ class Page {
         setlocale(LC_ALL, $settings->lang);
 
         require_once './lang/en_US.utf8.php';
-        $this->defaultlang = new en_US();
-
         require_once './lang/' . $settings->lang . '.php';
         $lang_class = substr($settings->lang, 0, strpos($settings->lang, ".")); // grab "en_US" from "en_US.utf8"
         if ($lang_class !== "en_US" && class_exists($lang_class)) {
             $this->lang = new $lang_class;
         } else {
-            $this->lang = $this->defaultlang;
+            $this->lang = new en_US();
         }
 
         $this->conn = $settings->conn;
@@ -115,11 +113,7 @@ class Page {
         if (array_key_exists($str, $this->lang->array)) {
             return $this->lang->array[$str];
         }
-        if (array_key_exists($str, $this->defaultlang->array)) {
-            return $this->defaultlang->array[$str];
-        }
-//        return "404";
-        return $str;
+        return "[$str]";
     }
 
     public function type_info($type) {
