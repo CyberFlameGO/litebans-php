@@ -319,8 +319,8 @@ class Page {
             $text = preg_replace("/(?i)(\x{00a7}|&)[0-9A-FK-OR]/u", "", $text);
         }
         $text = htmlspecialchars($text, ENT_QUOTES);
-        if (strstr($text, "\n")) {
-            $text = preg_replace("/\n/", "<br>", $text);
+        if (strstr($text, "\\n")) {
+            $text = preg_replace("/\\\\n/", "<br>", $text);
         }
         return $text;
     }
