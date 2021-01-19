@@ -121,6 +121,14 @@ if ($page->settings->header_show_totals) {
 </header>
 
 <?php
+if ($page->lang->version <= 0) {
+    ?>
+    <div class="col-lg-6 container modal-header alert alert-dismissible alert-light">
+        <button type="button" class="close text-dark" data-dismiss="alert">×</button>
+        <h5 class="text-dark">Warning: Your language file <a class="alert-link">(lang/<?php echo $settings->lang; ?>.php)</a> is outdated. Some messages will not appear correctly.</h5>
+    </div>
+    <?php
+}
 }
 }
 ?>
