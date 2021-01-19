@@ -2,8 +2,10 @@
 
 class sk_SK {
     public function __construct() {
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
+
         $array["index.welcome.main"] = "Vitajte na {server} BanListu.";
         $array["index.welcome.sub"] = "Nájdete tu vypísané všetky svoje tresty.";
 

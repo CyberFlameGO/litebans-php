@@ -23,6 +23,9 @@ final class LangTest extends TestCase {
 
             $count = count($instance->array);
             echo "Success. $count messages defined.\n";
+            if ($instance->version <= 0) {
+                echo "Outdated file: $lang\n";
+            }
         }
     }
 }

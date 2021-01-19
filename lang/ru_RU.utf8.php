@@ -4,6 +4,7 @@
 
 class ru_RU {
     public function __construct() {
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
         $array["index.welcome.main"] = "{server} | Бан-лист";

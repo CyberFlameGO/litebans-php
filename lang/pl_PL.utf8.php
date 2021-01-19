@@ -2,8 +2,10 @@
 
 class pl_PL {
     public function __construct() {
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
+
         $array["index.welcome.main"] = "Witaj na liście banów {server}.";
         $array["index.welcome.sub"] = "Tutaj jest lista wszystkich kar naszego serwera.";
 

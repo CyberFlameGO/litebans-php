@@ -2,6 +2,7 @@
 
 class it_IT {
     public function __construct() {
+        $this->version = 0;
         $array = array();
         $this->array = &$array;
         $array["index.welcome.main"] = 'Benvenuto nella lista ban di {server}.';

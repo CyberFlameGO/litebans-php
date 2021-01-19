@@ -2,6 +2,7 @@
 
 class nl_NL {
     public function __construct() {
+        $this->version = 0;
         $array = array();
         $this->array = &$array;
         $array["index.welcome1"] = "Welkom op {server}'s Ban Lijst.";

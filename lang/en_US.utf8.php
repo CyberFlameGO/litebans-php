@@ -2,8 +2,10 @@
 
 class en_US {
     public function __construct() {
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
+
         $array["index.welcome.main"] = "Welcome to {server}'s Ban List.";
         $array["index.welcome.sub"] = "Here is where all of our punishments are listed.";
 

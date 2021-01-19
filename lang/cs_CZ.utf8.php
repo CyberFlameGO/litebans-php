@@ -2,6 +2,7 @@
 
 class cs_CZ {
     public function __construct() {
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
         $array["index.welcome.main"] = "Vítejte na {server} BanListu.";

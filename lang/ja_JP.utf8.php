@@ -2,6 +2,7 @@
 
 class ja_JP {
     public function __construct() {
+        $this->version = 0;
         $array = array();
         $this->array = &$array;
         $array["index.welcome.main"] = 'ようこそ！ {server} の BANリストへ';

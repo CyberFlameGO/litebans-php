@@ -2,6 +2,7 @@
 
 class da_DK {
     public function __construct() {
+        $this->version = 0;
         $array = array();
         $this->array = &$array;
         $array["index.welcome.main"] = "Velkommen Til {server}'s Ban Liste.";

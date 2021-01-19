@@ -2,6 +2,7 @@
 
 class es_ES {
     public function __construct() {
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
         $array["index.welcome.main"] = "Bienvenido a la lista de sanciones de {server}.";
