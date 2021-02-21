@@ -1,9 +1,11 @@
 <?php
+
 class fr_FR {
     public function __construct() {
-        $this->version = 0;
+        $this->version = 1;
         $array = array();
         $this->array = &$array;
+		
         $array["index.welcome.main"] = "Bienvenue sur la liste des bans de {server}.";
         $array["index.welcome.sub"] = "C'est ici où toutes les sanctions sont listés.";
 
@@ -33,6 +35,11 @@ class fr_FR {
 
         $array["generic.ipban"] = "IP " . $array["generic.ban"];
         $array["generic.ipmute"] = "IP " . $array["generic.mute"];
+		
+        $array["generic.permanent"] = "Permanent";
+        $array["generic.permanent.ban"] = $array['generic.ban'] . ' ' . $array["generic.permanent"];
+        $array["generic.permanent.mute"] = $array["generic.mute"] . ' ' . $array['generic.permanent'];
+
         $array["generic.type"] = "Type";
         $array["generic.active"] = "Actif";
         $array["generic.inactive"] = "Inactif";
@@ -64,7 +71,7 @@ class fr_FR {
         $array["action.return"] = "Returner à {origin}";
 
         $array["error.missing-args"] = "Il manque des arguments.";
-        $array["error.name.unseen"] = "{name} ne s'est jamais coavant.";
+        $array["error.name.unseen"] = "{name} ne s'est jamais connecter avant.";
         $array["error.name.invalid"] = "Nom invalide.";
         $array["history.error.uuid.no-result"] = "Aucune sanction trouvé.";
         $array["info.error.id.no-result"] = "Erreur: {type} introuvable dans la base de données.";
