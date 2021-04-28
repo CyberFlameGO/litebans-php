@@ -219,7 +219,7 @@ class Page {
         // Under certain versions of PHP, there is a bug with BIT columns.
         // An empty string is returned no matter what the value is.
         // Workaround: cast to unsigned.
-        if ($phpIsBroken === true) {
+        if ($phpIsBroken === true && $this->settings->driver !== 'pgsql') {
             foreach ($bitColumns as $column) {
                 unset($columns[$column]);
                 $columns[] = "CAST($column AS UNSIGNED) AS $column";
