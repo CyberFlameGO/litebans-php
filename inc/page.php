@@ -186,7 +186,7 @@ class Page {
             $where = $this->where_append($this->name === "kicks" ? "" : $this->settings->active_query); // Not user input
             $where .= "(uuid <> '#offline#' AND uuid IS NOT NULL)";
 
-            $st = $this->conn->prepare("SELECT $select FROM $table $where GROUP BY $table.id ORDER BY time DESC LIMIT :limit OFFSET :offset");
+            $st = $this->conn->prepare("SELECT $select FROM $table $where ORDER BY time DESC LIMIT :limit OFFSET :offset");
             $st->bindParam(':offset', $offset, PDO::PARAM_INT);
             $st->bindParam(':limit', $limit, PDO::PARAM_INT);
 
