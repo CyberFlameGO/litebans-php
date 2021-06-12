@@ -121,7 +121,7 @@ if ($page->settings->header_show_totals) {
 </header>
 
 <?php
-if ($page->lang->version <= 0) {
+if ($page->lang->version <= 1) {
     ?>
     <div class="col-lg-6 container modal-header alert alert-dismissible alert-light">
         <button type="button" class="close text-dark" data-dismiss="alert">×</button>

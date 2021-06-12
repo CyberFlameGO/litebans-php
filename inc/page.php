@@ -213,7 +213,7 @@ class Page {
         }
 
         if ($table !== $this->settings->table['kicks']) {
-            array_push($columns, "removed_by_uuid", "removed_by_name", "removed_by_date");
+            array_push($columns, "removed_by_uuid", "removed_by_name", "removed_by_date", "removed_by_reason");
         }
 
         // Under certain versions of PHP, there is a bug with BIT columns.

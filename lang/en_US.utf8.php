@@ -2,7 +2,7 @@
 
 class en_US {
     public function __construct() {
-        $this->version = 1;
+        $this->version = 2;
         $array = array();
         $this->array = &$array;
 
@@ -23,10 +23,16 @@ class en_US {
         $array["generic.warn"] = "Warning";
         $array["generic.kick"] = "Kick";
 
+        $array["generic.unban"] = "Unban";
+        $array["generic.unmute"] = "Unmute";
+
         $array["generic.banned"] = "Banned";
         $array["generic.muted"] = "Muted";
         $array["generic.warned"] = "Warned";
         $array["generic.kicked"] = "Kicked";
+
+        $array["generic.unbanned"] = "Unbanned";
+        $array["generic.unmuted"] = "Unmuted";
 
         $array["generic.banned.by"] = $array["generic.banned"] . " By";
         $array["generic.muted.by"] = $array["generic.muted"] . " By";
@@ -47,19 +53,22 @@ class en_US {
         $array["generic.expired.kick"] = "N/A";
         $array["generic.player-name"] = "Player";
 
-        $array["page.expired.ban"] = '(Unbanned)';
-        $array["page.expired.ban-by"] = '(Unbanned by {name})';
-        $array["page.expired.mute"] = '(Unmuted)';
-        $array["page.expired.mute-by"] = '(Unmuted by {name})';
+        $array["page.expired.ban"] = '(' . $array["generic.unbanned"] . ')';
+        $array["page.expired.ban-by"] = '(' . $array["generic.unbanned"] . ' by {name})';
+        $array["page.expired.mute"] = '(' . $array["generic.unmuted"] . ')';
+        $array["page.expired.mute-by"] = '(' . $array["generic.unmuted"] . ' by {name})';
         $array["page.expired.warning"] = '(' . $array["generic.expired"] . ')';
 
         $array["table.player"] = $array["generic.player-name"];
         $array["table.type"] = $array["generic.type"];
         $array["table.executor"] = "Moderator";
         $array["table.reason"] = "Reason";
+        $array["table.reason.unban"] = $array["generic.unban"] . " " . $array["table.reason"];
+        $array["table.reason.unmute"] = $array["generic.unmute"] . " " . $array["table.reason"];
         $array["table.date"] = "Date";
         $array["table.expires"] = "Expires";
         $array["table.received-warning"] = "Received Warning";
+
 
         $array["table.server.name"] = "Server";
         $array["table.server.scope"] = "Server Scope";

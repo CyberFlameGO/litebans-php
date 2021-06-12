@@ -51,7 +51,7 @@ abstract class Info {
         return $this->page->get_avatar($banner_name, $row['banned_by_uuid'], true, $this->history_link($banner_name, $row['banned_by_uuid'], ':issued'), $name_left = false);
     }
 
-    function basic_info() {
+    function get_info() {
         $settings = $this->page->settings;
         $table = array(
             'table.player'        => function (Info $info) { return $info->punished_avatar(); },
@@ -69,14 +69,30 @@ abstract class Info {
 }
 
 //-
-class BanInfo extends Info {}
-class MuteInfo extends Info {}
+class BanInfo extends Info {
+    function get_info() {
+        $array = parent::get_info();
+        if ($this->page->active($this->row) === false) {
+            $array["table.reason.unban"] = function (Info $info) { return $info->page->clean($info->row['removed_by_reason']); };
+        }
+        return $array;
+    }
+}
+class MuteInfo extends Info {
+    function get_info() {
+        $array = parent::get_info();
+        if ($this->page->active($this->row) === false) {
+            $array["table.reason.unmute"] = function (Info $info) { return $info->page->clean($info->row['removed_by_reason']); };
+        }
+        return $array;
+    }
+}
 class WarnInfo extends Info {}
 //+
 
 class KickInfo extends Info {
-    function basic_info() {
-        $array = parent::basic_info();
+    function get_info() {
+        $array = parent::get_info();
         unset($array['table.expires']); // kicks do not expire
         return $array;
     }
@@ -161,7 +177,7 @@ if ($st->execute()) {
     }
     $page->print_header(true, $header . "<div class=\"noalign-w litebans-label-container\">$badges</div>");
 
-    $map = $info->basic_info($row, $player_name);
+    $map = $info->get_info($row, $player_name);
 
     $page->table_begin();
 
