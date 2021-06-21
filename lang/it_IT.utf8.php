@@ -2,48 +2,87 @@
 
 class it_IT {
     public function __construct() {
-        $this->version = 0;
+        $this->version = 2;
         $array = array();
         $this->array = &$array;
-        $array["index.welcome.main"] = 'Benvenuto nella lista ban di {server}.';
+
+        $array["index.welcome.main"] = "Benvenuto sulla lista ban di {server}";
+        $array["index.welcome.sub"] = "Qui è dove sono elencate tutte le punizioni effettuate";
 
         $array["title.index"] = 'Home';
-        $array["title.bans"] = 'Ban';
-        $array["title.mutes"] = 'Mute';
-        $array["title.warnings"] = 'Warning';
-        $array["title.kicks"] = 'Kick';
+        $array["title.bans"] = 'Bans';
+        $array["title.mutes"] = 'Mutes';
+        $array["title.warnings"] = 'Warnings';
+        $array["title.kicks"] = 'Kicks';
+        $array["title.player-history"] = "Le punizioni recenti di {name}";
+        $array["title.staff-history"] = "Le punizioni recenti date da {name}";
 
-        $array["page.permanent.ban"] = 'Ban Permanente';
-        $array["page.permanent.mute"] = 'Mute Permanente';
-        $array["page.permanent.warning"] = 'Permanente';
-        $array["page.expired.ban"] = '(Sbannato)';
-        $array["page.expired.ban-by"] = '(Sbannato da {name})';
-        $array["page.expired.mute"] = '(Smutato)';
-        $array["page.expired.mute-by"] = '(Smutato da {name})';
-        $array["page.expired.warning"] = '(Terminato)';
 
-        $array["check.username"] = "Giocatore";
-        $array["action.check"] = "Controlla";
+        $array["generic.ban"] = "Ban";
+        $array["generic.mute"] = "Mute";
+        $array["generic.warn"] = "Warning";
+        $array["generic.kick"] = "Kick";
+
+        $array["generic.unban"] = "Unban";
+        $array["generic.unmute"] = "Unmute";
+
+        $array["generic.banned"] = "Bannato";
+        $array["generic.muted"] = "Mutato";
+        $array["generic.warned"] = "Warnato";
+        $array["generic.kicked"] = "Kickato";
+
+        $array["generic.unbanned"] = "Sbannato";
+        $array["generic.unmuted"] = "Smutato";
+
+        $array["generic.banned.by"] = $array["generic.banned"] . " da";
+        $array["generic.muted.by"] = $array["generic.muted"] . " da";
+        $array["generic.warned.by"] = $array["generic.warned"] . " da";
+        $array["generic.kicked.by"] = $array["generic.kicked"] . " da";
+
+        $array["generic.ipban"] = "IP " . $array["generic.ban"];
+        $array["generic.ipmute"] = "IP " . $array["generic.mute"];
+
+        $array["generic.permanent"] = "Permanente";
+        $array["generic.permanent.ban"] = $array["generic.ban"] . ' ' . $array['generic.permanent'];
+        $array["generic.permanent.mute"] = $array["generic.mute"] . ' ' . $array['generic.permanent'];
+
+        $array["generic.type"] = "Tipo";
+        $array["generic.active"] = "Attivo";
+        $array["generic.inactive"] = "Inattivo";
+        $array["generic.expired"] = "Scaduto";
+        $array["generic.expired.kick"] = "Non applicabile";
+        $array["generic.player-name"] = "Player";
+
+        $array["page.expired.ban"] = '(' . $array["generic.unbanned"] . ')';
+        $array["page.expired.ban-by"] = '(' . $array["generic.unbanned"] . ' da {name})';
+        $array["page.expired.mute"] = '(' . $array["generic.unmuted"] . ')';
+        $array["page.expired.mute-by"] = '(' . $array["generic.unmuted"] . ' da {name})';
+        $array["page.expired.warning"] = '(' . $array["generic.expired"] . ')';
+
+        $array["table.player"] = $array["generic.player-name"];
+        $array["table.type"] = $array["generic.type"];
+        $array["table.executor"] = "Staffer";
+        $array["table.reason"] = "Motivazione";
+        $array["table.reason.unban"] = $array["generic.unban"] . " con " . $array["table.reason"];
+        $array["table.reason.unmute"] = $array["generic.unmute"] . " con " . $array["table.reason"];
+        $array["table.date"] = "Data";
+        $array["table.expires"] = "Scadenza";
+        $array["table.received-warning"] = "Warn ricevuto";
+
+
+        $array["table.server.name"] = "Server";
+        $array["table.server.scope"] = "Server";
+        $array["table.server.origin"] = "Server di origine";
+        $array["table.server.global"] = "*";
         $array["table.pager.number"] = "Pagina";
 
-        $array["error.name.unseen"] = "non è mai entrato nel server.";
+        $array["action.check"] = "Controlla";
+        $array["action.return"] = "Ritorna al {origin}";
 
-        $array["title.staff-history"] = "punizioni recenti di ";
-        $array["title.player-history"] = "punizioni recenti per  ";
-        $array["history.type"] = "Tipo";
-
-        $array["history.error.uuid.no-result"] = "Nessuna punizione trovata.";
-        $array["action.return"] = "Torna a";
-
-        $array["table.received-warning"] = "Avvertimento ricevuto";
-
-        // Errors which are only accessible from invalid user input or removed pages.
-        $array["error.name.invalid"] = "Nome invalido.";
-        $array["history.error.uuid.required"] = "Argomenti mancanti (uuid).";
-        $array["info.error.type-id.required"] = "Argomenti mancanti (type, id).";
-        $array["info.error.type.invalid"] = "Pagina richiesta sconosciuta.";
-        $array["info.error.id.invalid"] = "ID Invalido";
-        $array["info.error.id.no-result"] = "Errore: ";
-
+        $array["error.missing-args"] = "Mancano gli argomenti per la ricerca.";
+        $array["error.name.unseen"] = "{name} Non è mai entrato.";
+        $array["error.name.invalid"] = "Nome non valido.";
+        $array["history.error.uuid.no-result"] = "Non sono state trovate punizioni.";
+        $array["info.error.id.no-result"] = "Errore: {type} non trovato nel database.";
     }
 }
