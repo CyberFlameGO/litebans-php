@@ -143,10 +143,6 @@ class Settings {
             ini_set("display_errors", 1);
         }
 
-        if ($this->simple_urls && $this->name_link === "index.php") {
-            $this->name_link = "../index/";
-        }
-
         $this->active_query = "";
 
         if ($this->driver === "pgsql") {

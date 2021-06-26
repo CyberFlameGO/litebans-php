@@ -37,6 +37,10 @@ function navbar($links) {
 function print_header() {
 $page = $this->page;
 $settings = $page->settings;
+
+if ($page->settings->name_link === "index.php") {
+    $page->settings->name_link = $page->link("index.php");
+}
 if ($page->settings->header_show_totals) {
     $t = $page->settings->table;
     $t_bans = $t['bans'];
