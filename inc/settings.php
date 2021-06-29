@@ -136,6 +136,8 @@ class Settings {
 
         /** Don't modify anything here unless you know what you're doing **/
 
+        $this->error_throw = false;
+
         date_default_timezone_set($this->timezone);
 
         if ($this->error_reporting) {
@@ -220,8 +222,11 @@ class Settings {
     /**
      * @param $settings Settings
      * @param $e Exception
+     * @throws Exception
      */
     static function handle_error($settings, Exception $e) {
+        if ($settings->error_throw) throw $e;
+
         $message = $e->getMessage();
         if ($settings->error_pages) {
             if (strstr($message, "Access denied for user")) {

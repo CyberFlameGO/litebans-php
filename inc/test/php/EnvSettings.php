@@ -8,6 +8,7 @@ class EnvSettings extends Settings {
         $this->username = getenv("MYSQL_USERNAME");
         $this->password = getenv("MYSQL_PASSWORD");
         $this->table_prefix = getenv("LITEBANS_TABLE_PREFIX");
+        $this->error_throw = true;
 
         $this->init_tables();
 
