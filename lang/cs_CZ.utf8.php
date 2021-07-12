@@ -2,9 +2,13 @@
 
 class cs_CZ {
     public function __construct() {
-        $this->version = 1;
+        $this->version = 2;
         $array = array();
         $this->array = &$array;
+        $array["index.welcome.main"] = 'Vítej na {server}.';
+        $array["index.welcome.sub"] = 'Zde nalezneš vypsány všechny své tresty.';
+
+        $array["title.index"] = 'Úvod';
         $array["index.welcome.main"] = "Vítejte na {server} BanListu.";
         $array["index.welcome.sub"] = "Naleznete zde vypsány všechny své tresty.";
 
@@ -22,20 +26,26 @@ class cs_CZ {
         $array["generic.warn"] = "Varování";
         $array["generic.kick"] = "Vyhození";
 
-        $array["generic.banned"] = "Udělil(a)";
-        $array["generic.muted"] = "Udělil(a)";
-        $array["generic.warned"] = "Udělil(a)";
-        $array["generic.kicked"] = "Udělil(a)";
+        $array["generic.unban"] = "unbanu";
+        $array["generic.unmute"] = "zrušení umlčení";
 
-        $array["generic.banned.by"] = $array["generic.banned"] . " ";
-        $array["generic.muted.by"] = $array["generic.muted"] . " ";
-        $array["generic.warned.by"] = $array["generic.warned"] . " ";
-        $array["generic.kicked.by"] = $array["generic.kicked"] . " ";
+        $array["generic.banned"] = "Zabanován/a";
+        $array["generic.muted"] = "Umlčen/a";
+        $array["generic.warned"] = "Varován/a";
+        $array["generic.kicked"] = "Vyhozen/a";
+
+        $array["generic.unbanned"] = "Odbanován/a";
+        $array["generic.unmuted"] = "Umlčení zrušeno";
+
+        $array["generic.banned.by"] = $array["generic.banned"] . " od";
+        $array["generic.muted.by"] = $array["generic.muted"] . " od";
+        $array["generic.warned.by"] = $array["generic.warned"] . " od";
+        $array["generic.kicked.by"] = $array["generic.kicked"] . " od";
 
         $array["generic.ipban"] = "IP " . $array["generic.ban"];
         $array["generic.ipmute"] = "IP " . $array["generic.mute"];
 
-        $array["generic.permanent"] = "Pernamentní";
+        $array["generic.permanent"] = "Permanent";
         $array["generic.permanent.ban"] = $array['generic.permanent'] . ' ' . $array["generic.ban"];
         $array["generic.permanent.mute"] = $array['generic.permanent'] . ' ' . $array["generic.mute"];
 
@@ -43,23 +53,27 @@ class cs_CZ {
         $array["generic.active"] = "Aktivní";
         $array["generic.inactive"] = "Neaktivní";
         $array["generic.expired"] = "Vypršelo";
-        $array["generic.player-name"] = "Hráč(ka)";
+        $array["generic.expired.kick"] = "Neznámé";
+        $array["generic.player-name"] = "Hráč";
 
-        $array["page.expired.ban"] = '(Vypršelo)';
-        $array["page.expired.ban-by"] = '(Zrušeno od {name})';
-        $array["page.expired.mute"] = '(Vypršelo)';
-        $array["page.expired.mute-by"] = '(Zrušeno od {name})';
+        $array["page.expired.ban"] = '(' . $array["generic.unbanned"] . ')';
+        $array["page.expired.ban-by"] = '(' . $array["generic.unbanned"] . ' od {name})';
+        $array["page.expired.mute"] = '(' . $array["generic.unmuted"] . ')';
+        $array["page.expired.mute-by"] = '(' . $array["generic.unmuted"] . ' od {name})';
         $array["page.expired.warning"] = '(' . $array["generic.expired"] . ')';
 
         $array["table.player"] = $array["generic.player-name"];
         $array["table.type"] = $array["generic.type"];
-        $array["table.executor"] = "Udělil(a)";
+        $array["table.executor"] = "Moderátor";
         $array["table.reason"] = "Důvod";
+        $array["table.reason.unban"] = $array["table.reason"] . " " . $array["generic.unban"];
+        $array["table.reason.unmute"] = $array["table.reason"] . " " . $array["generic.unmute"];
         $array["table.date"] = "Datum";
-        $array["table.expires"] = "Vypršelo";
-        $array["table.received-warning"] = "Poslední varování";
+        $array["table.expires"] = "Vyprší";
+        $array["table.received-warning"] = "Poslední Varování";
 
-        $array["table.server.name"] = "Server";
+
+        $array["table.server.name"] = "Servery";
         $array["table.server.scope"] = "Platí pro servery";
         $array["table.server.origin"] = "Uděleno na serveru";
         $array["table.server.global"] = "*";
@@ -69,9 +83,9 @@ class cs_CZ {
         $array["action.return"] = "Zpět na {origin}";
 
         $array["error.missing-args"] = "Chybí argumenty.";
-        $array["error.name.unseen"] = "{name} se ještě nepřipojil(a).";
+        $array["error.name.unseen"] = "{name} se ještě nikdy nepřipojil/a.";
         $array["error.name.invalid"] = "Neplatné jméno.";
-        $array["history.error.uuid.no-result"] = "Nebyli nelezeny žádné tresty.";
-        $array["info.error.id.no-result"] = "Chyba: {type} nebyl(a) nelezen(a) v databázi.";
+        $array["history.error.uuid.no-result"] = "Nenalezeny žádné tresty.";
+        $array["info.error.id.no-result"] = "Chyba: {type} nebyl nalezen žádný záznam/y v databázi.";
     }
 }
