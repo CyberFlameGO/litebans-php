@@ -49,10 +49,10 @@ if ($page->settings->header_show_totals) {
     $t_kicks = $t['kicks'];
     try {
         $sql = "SELECT
-            (SELECT id FROM $t_bans ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM $t_mutes ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM $t_warnings ORDER BY id DESC LIMIT 1),
-            (SELECT id FROM $t_kicks ORDER BY id DESC LIMIT 1)";
+            (SELECT COUNT(*) FROM $t_bans),
+            (SELECT COUNT(*) FROM $t_mutes),
+            (SELECT COUNT(*) FROM $t_warnings),
+            (SELECT COUNT(*) FROM $t_kicks)";
 
         if ($page->settings->verify) {
             $sql .= ",(SELECT id FROM " . $t['config'] . " LIMIT 1)";
