@@ -47,12 +47,13 @@ if ($page->settings->header_show_totals) {
     $t_mutes = $t['mutes'];
     $t_warnings = $t['warnings'];
     $t_kicks = $t['kicks'];
+    $active_query = $page->settings->active_query;
     try {
         $sql = "SELECT
-            (SELECT COUNT(*) FROM $t_bans),
-            (SELECT COUNT(*) FROM $t_mutes),
-            (SELECT COUNT(*) FROM $t_warnings),
-            (SELECT COUNT(*) FROM $t_kicks)";
+            (SELECT COUNT(*) FROM $t_bans $active_query),
+            (SELECT COUNT(*) FROM $t_mutes $active_query),
+            (SELECT COUNT(*) FROM $t_warnings $active_query),
+            (SELECT COUNT(*) FROM $t_kicks $active_query)";
 
         if ($page->settings->verify) {
             $sql .= ",(SELECT id FROM " . $t['config'] . " LIMIT 1)";
