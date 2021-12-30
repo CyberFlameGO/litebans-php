@@ -52,9 +52,9 @@ class Settings {
         $this->timezone = "UTC";
 
         // The date format can be changed here.
-        // https://secure.php.net/manual/en/function.strftime.php
-        // Example output of default format: July 2, 2015, 09:19; August 4, 2016, 18:37
-        $this->date_format = '%B %d, %Y, %H:%M';
+        // https://unicode-org.github.io/icu/userguide/format_parse/datetime/#date-field-symbol-table
+        // Example output of default format: July 2, 2015, 09:19
+        $this->date_format = 'MMMM d, yyyy, HH:mm';
 
         // Amount of bans/mutes/warnings to show on each page
         $this->limit_per_page = 10;
@@ -161,8 +161,6 @@ class Settings {
         }
         $this->verify = false;
 
-        $this->test_strftime();
-
         $this->init_tables();
 
         if ($connect) {
@@ -255,25 +253,6 @@ class Settings {
         }
         die("Database error");
     }
-
-    private function test_strftime() {
-        $test = gmstrftime($this->date_format, 0);
-        if ($test == false) {
-            ob_start();
-            var_dump($test);
-            $testdump = ob_get_clean();
-            die("Error: date_format test failed. gmstrftime(\"" . $this->date_format . "\",0) returned $testdump");
-        }
-
-        $test = gmstrftime("%Y-%m-%d %H:%M", 0);
-        if ($test !== "1970-01-01 00:00") {
-            ob_start();
-            var_dump($test);
-            $testdump = ob_get_clean();
-            die("Assertion failed: gmstrftime(\"%Y-%m-%d %H:%M\",0) != \"1970-01-01 00:00\"<br>Actual result: $testdump");
-        }
-    }
-
 
     protected function init_tables() {
         $this->table = array();
