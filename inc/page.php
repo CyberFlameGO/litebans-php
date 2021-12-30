@@ -22,7 +22,7 @@ class Page {
             $this->lang = new en_US();
         }
 
-        $this->formatter = new IntlDateFormatter($settings->lang, IntlDateFormatter::LONG, IntlDateFormatter::NONE, $this->settings->timezone, IntlDateFormatter::GREGORIAN, $settings->date_format);
+        $this->formatter = new IntlDateFormatter($settings->lang, IntlDateFormatter::LONG, IntlDateFormatter::NONE, $settings->timezone, IntlDateFormatter::GREGORIAN, $settings->date_format);
 
         $this->conn = $settings->conn;
         $this->settings = $settings;

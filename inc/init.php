@@ -7,6 +7,6 @@ function redirect($url, $showtext = true) {
     die("<script data-cfasync=\"false\" type=\"text/javascript\">document.location=\"$url\";</script>");
 }
 
-if (!extension_loaded("pdo_mysql")) {
+if (!extension_loaded("pdo_mysql") || !extension_loaded("intl")) {
     redirect("error/missing-extensions.php");
 }

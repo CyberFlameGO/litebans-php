@@ -14,8 +14,11 @@
         <div class="text-warning">
             The following PHP extensions are required by litebans-php but were not found:
             <br>
-            <?php if (!extension_loaded("pdo_mysql")) {
-                echo "- <a class=\"text-danger\">pdo_mysql</a><br>";
+            <?php
+            foreach(array("pdo_mysql", "intl") as $ext) {
+                if (!extension_loaded($ext)) {
+                    echo "- <a class=\"text-danger\">$ext</a><br>";
+                }
             }
             $phpini = php_ini_loaded_file();
 
