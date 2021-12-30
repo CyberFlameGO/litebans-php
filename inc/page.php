@@ -571,7 +571,7 @@ class Page {
             $total = $result['count'];
         }
 
-        $pages = (int)($total / $this->settings->limit_per_page) + 1;
+        $pages = (int)(($total - 1) / $this->settings->limit_per_page) + 1;
 
         $cur = $this->page;
         $prev = $cur - 1;
