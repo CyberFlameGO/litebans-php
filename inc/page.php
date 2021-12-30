@@ -22,6 +22,8 @@ class Page {
             $this->lang = new en_US();
         }
 
+        $this->formatter = new IntlDateFormatter($settings->lang, IntlDateFormatter::LONG, IntlDateFormatter::NONE, $this->settings->timezone, IntlDateFormatter::GREGORIAN, $settings->date_format);
+
         $this->conn = $settings->conn;
         $this->settings = $settings;
         $this->uuid_name_cache = array();
@@ -394,8 +396,7 @@ class Page {
      */
     function millis_to_date($millis) {
         $ts = $millis / 1000;
-        $formatter = new IntlDateFormatter($this->settings->lang, IntlDateFormatter::LONG, IntlDateFormatter::NONE, $this->settings->timezone, IntlDateFormatter::GREGORIAN, $this->settings->date_format);
-        $result = $formatter->format($ts);
+        $result = $this->formatter->format($ts);
         $translations = $this->settings->date_month_translations;
         if ($translations !== null) {
             foreach ($translations as $key => $val) {
