@@ -16,7 +16,7 @@ before_script:
   # mbstring broken because dependencies not included in default template:
   # > $ docker-php-ext-install mbstring pdo_pgsql curl json intl gd xml zip bz2 opcache
   # > No package 'oniguruma' found
-  - docker-php-ext-install pdo_mysql curl zip bz2
+  - docker-php-ext-install pdo_mysql intl curl zip bz2
   # Install & enable Xdebug for code coverage reports
   - pecl install xdebug
   - docker-php-ext-enable xdebug
