@@ -10,7 +10,7 @@ final class PageTest extends TestCase {
 
         foreach (range(1, 2) as $currentPage) {
             $page->page = $currentPage;
-            $pager = $page->generate_pager(10);
+            $pager = $page->generate_pager($page->settings->limit_per_page + ($page->settings->limit_per_page / 2));
             self::assertIsArray($pager);
             self::assertCount(3, $pager);
             self::assertStringContainsString("Page $currentPage/2", $pager["count"]);
