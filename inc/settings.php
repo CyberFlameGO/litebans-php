@@ -1,9 +1,7 @@
 <?php
 
 class Settings {
-    public static $TRUE = "1", $FALSE = "0";
-
-    public function __construct($connect = true) {
+    public function __construct() {
         // Web interface language. Languages are stored in the "lang/" directory.
         $this->lang = 'en_US.utf8';
 
@@ -130,128 +128,18 @@ class Settings {
             );
         }
 
-
-        /*** End of configuration ***/
-
-
-        /** Don't modify anything here unless you know what you're doing **/
-
-        $this->error_throw = false;
-
-        date_default_timezone_set($this->timezone);
+        /**** End of configuration ****/
 
         if ($this->error_reporting) {
             error_reporting(E_ALL);
             ini_set("display_errors", 1);
         }
 
-        $this->active_query = "";
+        $this->error_throw = false;
 
-        if ($this->driver === "pgsql") {
-            Settings::$TRUE = "B'1'";
-            Settings::$FALSE = "B'0'";
-        }
-
-        if (!$this->show_inactive_bans) {
-            $this->active_query = self::append_query($this->active_query, "active=" . Settings::$TRUE);
-        }
-
-        if (!$this->show_silent_bans) {
-            $this->active_query = self::append_query($this->active_query, "silent=" . Settings::$FALSE);
-        }
-        $this->verify = false;
+        date_default_timezone_set($this->timezone);
 
         $this->init_tables();
-
-        if ($connect) {
-            $this->connect();
-        } else {
-            $this->conn = null;
-        }
-    }
-
-    protected function connect($verify = true) {
-        $this->verify = $verify;
-        $driver = $this->driver;
-        $host = $this->host;
-        $port = $this->port;
-        $database = $this->database;
-        $username = $this->username;
-        $password = $this->password;
-        if ($username === "" && $password === "") {
-            redirect("error/unconfigured.php");
-        }
-
-        $dsn = "$driver:dbname=$database;host=$host;port=$port";
-        if ($driver === 'mysql') {
-            $dsn .= ';charset=utf8';
-        }
-
-        $options = array(
-            PDO::ATTR_TIMEOUT            => 5,
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-            PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8",
-        );
-
-        try {
-            $this->conn = new PDO($dsn, $username, $password, $options);
-
-            if (!$this->header_show_totals && $verify) {
-                $st = $this->conn->query("SELECT * FROM " . $this->table['config'] . " LIMIT 1;");
-                $st->fetch();
-                $st->closeCursor();
-            }
-        } catch (PDOException $e) {
-            Settings::handle_error($this, $e);
-        }
-        if ($driver === 'pgsql') {
-            $this->conn->exec("SET NAMES 'UTF8';");
-        }
-    }
-
-    static function append_query($existing, $new) {
-        if ($existing !== "") {
-            return "$existing AND $new";
-        }
-        return "WHERE $new";
-    }
-
-    /**
-     * @param $settings Settings
-     * @param $e Exception
-     * @throws Exception
-     */
-    static function handle_error($settings, Exception $e) {
-        if ($settings->error_throw) throw $e;
-
-        $message = $e->getMessage();
-        if ($settings->error_pages) {
-            if (strstr($message, "Access denied for user")) {
-                if ($settings->error_reporting) {
-                    redirect("error/access-denied.php?error=" . base64_encode($message));
-                } else {
-                    redirect("error/access-denied.php");
-                }
-            }
-            if (strstr($message, "Base table or view not found:")) {
-                try {
-                    $st = $settings->conn->query("SELECT * FROM " . $settings->table['bans'] . " LIMIT 1;");
-                    $st->fetch();
-                    $st->closeCursor();
-                } catch (PDOException $e) {
-                    redirect("error/tables-not-found.php");
-                }
-                redirect("error/outdated-plugin.php");
-            }
-            if (strstr($message, "Unknown column")) {
-                redirect("error/outdated-plugin.php");
-            }
-        }
-        if ($settings->error_reporting) {
-            die("Database error: $message");
-        }
-        die("Database error");
     }
 
     protected function init_tables() {

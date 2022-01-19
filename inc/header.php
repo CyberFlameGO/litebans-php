@@ -47,7 +47,7 @@ if ($page->settings->header_show_totals) {
     $t_mutes = $t['mutes'];
     $t_warnings = $t['warnings'];
     $t_kicks = $t['kicks'];
-    $active_query = $page->settings->active_query;
+    $active_query = $page->db->active_query;
     try {
         $sql = "SELECT
             (SELECT COUNT(*) FROM $t_bans $active_query),
@@ -55,7 +55,7 @@ if ($page->settings->header_show_totals) {
             (SELECT COUNT(*) FROM $t_warnings $active_query),
             (SELECT COUNT(*) FROM $t_kicks $active_query)";
 
-        if ($page->settings->verify) {
+        if ($page->db->verify) {
             $sql .= ",(SELECT id FROM " . $t['config'] . " LIMIT 1)";
         }
         $st = $page->conn->query($sql);
@@ -69,7 +69,7 @@ if ($page->settings->header_show_totals) {
             'kicks.php'    => $row[3],
         );
     } catch (PDOException $ex) {
-        Settings::handle_error($page->settings, $ex);
+        $page->db->handle_error($page->settings, $ex);
     }
 }
 ?>

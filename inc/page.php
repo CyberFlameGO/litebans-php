@@ -6,26 +6,28 @@ class Page {
         $this->time = microtime(true);
         ini_set('default_charset', 'utf-8');
         require_once './inc/settings.php';
+        require_once './inc/database.php';
         if (class_exists("EnvSettings")) {
-            $settings = new EnvSettings($connect);
+            $cfg = new EnvSettings();
         } else {
-            $settings = new Settings($connect);
+            $cfg = new Settings();
         }
-        setlocale(LC_ALL, $settings->lang);
+        setlocale(LC_ALL, $cfg->lang);
 
         require_once './lang/en_US.utf8.php';
-        require_once './lang/' . $settings->lang . '.php';
-        $lang_class = substr($settings->lang, 0, strpos($settings->lang, ".")); // grab "en_US" from "en_US.utf8"
+        require_once './lang/' . $cfg->lang . '.php';
+        $lang_class = substr($cfg->lang, 0, strpos($cfg->lang, ".")); // grab "en_US" from "en_US.utf8"
         if ($lang_class !== "en_US" && class_exists($lang_class)) {
             $this->lang = new $lang_class;
         } else {
             $this->lang = new en_US();
         }
+        $this->db = new Database($cfg, $connect, !($cfg instanceof EnvSettings));
 
-        $this->formatter = new IntlDateFormatter($settings->lang, IntlDateFormatter::LONG, IntlDateFormatter::NONE, $settings->timezone, IntlDateFormatter::GREGORIAN, $settings->date_format);
+        $this->formatter = new IntlDateFormatter($cfg->lang, IntlDateFormatter::LONG, IntlDateFormatter::NONE, $cfg->timezone, IntlDateFormatter::GREGORIAN, $cfg->date_format);
 
-        $this->conn = $settings->conn;
-        $this->settings = $settings;
+        $this->conn = $this->db->conn;
+        $this->settings = $cfg;
         $this->uuid_name_cache = array();
 
         $this->name = $name;
@@ -67,7 +69,7 @@ class Page {
         $this->is_index = ((substr($_SERVER['SCRIPT_NAME'], -strlen("index.php"))) === "index.php");
         if ($this->is_index) {
             $this->index_base_path = substr($_SERVER["PHP_SELF"], 0, -strlen("index.php"));
-            if ($settings->simple_urls) {
+            if ($cfg->simple_urls) {
                 $keys = array_keys($_GET);
 
                 if (count($keys) > 0) {
@@ -85,10 +87,8 @@ class Page {
         $page = "1";
         if (isset($_GET['page'])) {
             $page = $_GET['page']; // user input
-        } else {
-            if ($argc > 1) {
-                $page = $this->args[$argc - 2];
-            }
+        } else if ($argc > 1) {
+            $page = $this->args[$argc - 2];
         }
         if (filter_var($page, FILTER_VALIDATE_INT)) {
             $this->page = max(0, (int)$page);
@@ -119,13 +119,13 @@ class Page {
     }
 
     public function type_info($type) {
-        $settings = $this->settings;
+        $cfg = $this->settings;
         switch ($type) {
             case "ban":
             case "bans":
                 return array(
                     "type"  => "ban",
-                    "table" => $settings->table['bans'],
+                    "table" => $cfg->table['bans'],
                     "title" => $this->t("title.bans"),
                     "page"  => "bans.php",
                 );
@@ -133,7 +133,7 @@ class Page {
             case "mutes":
                 return array(
                     "type"  => "mute",
-                    "table" => $settings->table['mutes'],
+                    "table" => $cfg->table['mutes'],
                     "title" => $this->t("title.mutes"),
                     "page"  => "mutes.php",
                 );
@@ -141,7 +141,7 @@ class Page {
             case "warnings":
                 return array(
                     "type"  => "warn",
-                    "table" => $settings->table['warnings'],
+                    "table" => $cfg->table['warnings'],
                     "title" => $this->t("title.warnings"),
                     "page"  => "warnings.php",
                 );
@@ -149,7 +149,7 @@ class Page {
             case "kicks":
                 return array(
                     "type"  => "kick",
-                    "table" => $settings->table['kicks'],
+                    "table" => $cfg->table['kicks'],
                     "title" => $this->t("title.kicks"),
                     "page"  => "kicks.php",
                 );
@@ -185,7 +185,7 @@ class Page {
 
             $select = $this->get_selection($table); // Not user input
 
-            $where = $this->where_append($this->name === "kicks" ? "" : $this->settings->active_query); // Not user input
+            $where = $this->where_append($this->name === "kicks" ? "" : $this->db->active_query); // Not user input
             $where .= "(uuid <> '#offline#' AND uuid IS NOT NULL)";
 
             $st = $this->conn->prepare("SELECT $select FROM $table $where ORDER BY time DESC LIMIT :limit OFFSET :offset");
@@ -200,7 +200,7 @@ class Page {
 
             return $rows;
         } catch (PDOException $ex) {
-            Settings::handle_error($this->settings, $ex);
+            $this->db->handle_error($this->settings, $ex);
             return array();
         }
     }
@@ -432,7 +432,7 @@ class Page {
      */
     function is_uuid($str) {
         $len = strlen($str);
-        return $len == 32 || $len == 36;
+        return ($len == 32 || $len == 36);
     }
 
     function uuid_dashify($str) {
@@ -564,7 +564,7 @@ class Page {
         }
 
         if ($total === -1) {
-            $where = $this->where_append($this->name === "kicks" ? "" : $this->settings->active_query);
+            $where = $this->where_append($this->name === "kicks" ? "" : $this->db->active_query);
             $where .= "(uuid <> '#offline#' AND uuid IS NOT NULL)";
 
             $st = $this->conn->query("SELECT COUNT(*) AS count FROM $table $where");

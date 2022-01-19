@@ -51,34 +51,8 @@ class Check {
 
             echo "<br>";
             redirect($page->link($href));
-            /*
-            $table = $page->settings->table['bans'];
-
-            $stmt = $page->conn->prepare("SELECT * FROM $table WHERE (uuid=? AND active=" . Settings::$TRUE . ") LIMIT 1");
-            if ($stmt->execute(array($uuid))) {
-                if (!($row = $stmt->fetch())) {
-                    $this->println("$name is not banned.");
-                    return;
-                }
-                $banner = $page->get_banner_name($row);
-                $reason = $page->clean($row['reason']);
-                $time = $page->millis_to_date($row['time']);
-                $until = $page->millis_to_date($row['until']);
-
-                $this->println("$name is banned!");
-                $this->println("Banned by: $banner");
-                $this->println("Reason: $reason");
-                $this->println("Banned on: $time");
-                if ($row['until'] > 0) {
-                    $this->println("Banned until: $until");
-                } else {
-                    $this->println("Banned permanently.");
-                }
-            }
-            $stmt->closeCursor();
-            */
         } catch (PDOException $ex) {
-            Settings::handle_error($page->settings, $ex);
+            $page->db->handle_error($page->settings, $ex);
         }
     }
 

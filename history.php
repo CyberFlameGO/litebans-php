@@ -266,5 +266,5 @@ try {
 
     $page->print_footer();
 } catch (PDOException $ex) {
-    Settings::handle_error($page->settings, $ex);
+    $page->db->handle_error($page->settings, $ex);
 }
