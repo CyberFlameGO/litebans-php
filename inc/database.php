@@ -3,7 +3,7 @@
 class Database {
     public static $TRUE = "1", $FALSE = "0";
 
-    public function __construct(Settings $settings, $connect = true, $verify) {
+    public function __construct(Settings $settings, $connect, $verify) {
         if ($connect) {
             $this->connect($settings, $verify);
         } else {
