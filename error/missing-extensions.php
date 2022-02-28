@@ -12,18 +12,23 @@
     <div class="jumbotron">
         <h2>Missing Extensions</h2><br>
         <div class="text-warning">
-            The following PHP extensions are required by litebans-php but were not found:
-            <br>
             <?php
+            $problems = array();
             foreach(array("pdo_mysql", "intl") as $ext) {
                 if (!extension_loaded($ext)) {
-                    echo "- <a class=\"text-danger\">$ext</a><br>";
+                    $problems[] = "- <a class=\"text-danger\">$ext</a>";
                 }
             }
-            $phpini = php_ini_loaded_file();
+            if (count($problems) > 0) {
+                echo("The following PHP extensions are required by litebans-php but were not found:<br>");
+                echo(implode("<br>", $problems));
+                $phpini = php_ini_loaded_file();
 
-            echo "These extensions can be enabled in php.ini.<br><br>";
-            echo "php.ini location: <a class=\"text-info\">" . $phpini . "</a><br>";
+                echo "These extensions can be enabled in php.ini.<br><br>";
+                echo "php.ini location: <a class=\"text-info\">" . $phpini . "</a><br>";
+                echo "List of currently loaded extensions:";
+                echo(implode(', ', get_loaded_extensions()));
+            }
             ?>
         </div>
         <br>
