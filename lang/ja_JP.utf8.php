@@ -2,49 +2,87 @@
 
 class ja_JP {
     public function __construct() {
-        $this->version = 0;
+        $this->version = 2;
         $array = array();
         $this->array = &$array;
+
         $array["index.welcome.main"] = 'ようこそ！ {server} の BANリストへ';
         $array["index.welcome.sub"] = 'ここには全ての処罰が公開されています';
 
         $array["title.index"] = 'ホーム';
-        $array["title.bans"] = 'BAN';
-        $array["title.mutes"] = 'ミュート';
+        $array["title.bans"] = 'BANs';
+        $array["title.mutes"] = 'MUTEs';
         $array["title.warnings"] = '警告';
-        $array["title.kicks"] = 'キック';
+        $array["title.kicks"] = 'Kick';
+        $array["title.player-history"] = "{name} の最近の処罰";
+        $array["title.staff-history"] = "{name} による最近の処罰実行";
 
-        $array["page.permanent.ban"] = '無期限BAN';
-        $array["page.permanent.mute"] = '無期限ミュート';
-        $array["page.permanent.warning"] = '無期限';
-        $array["page.expired.ban"] = '(解除済み)';
-        $array["page.expired.ban-by"] = '({name}によって解除されました)';
-        $array["page.expired.mute"] = '(解除済み)';
-        $array["page.expired.mute-by"] = '({name}によって解除されました)';
-        $array["page.expired.warning"] = '(期限が終わりました)';
 
-        $array["check.username"] = "プレイヤー";
-        $array["action.check"] = "検索";
-        $array["table.pager.number"] = "ページ";
+        $array["generic.ban"] = "BAN";
+        $array["generic.mute"] = "MUTE";
+        $array["generic.warn"] = "警告";
+        $array["generic.kick"] = "Kick";
 
-        $array["error.name.unseen"] = "このプレイヤーはサーバーに参加していません";
+        $array["generic.unban"] = "BAN解除";
+        $array["generic.unmute"] = "MUTE解除";
 
-        $array["title.staff-history"] = "最近の発行:";
-        $array["title.player-history"] = "最近の処罰:";
-        $array["history.type"] = "タイプ";
+        $array["generic.banned"] = "Banned";
+        $array["generic.muted"] = "Muted";
+        $array["generic.warned"] = "警告されました";
+        $array["generic.kicked"] = "Kicked";
 
-        $array["history.error.uuid.no-result"] = "処罰データはありません";
-        $array["action.return"] = "戻る";
+        $array["generic.unbanned"] = "BAN解除";
+        $array["generic.unmuted"] = "MUTE解除";
 
+        $array["generic.banned.by"] = $array["generic.banned"] . " By";
+        $array["generic.muted.by"] = $array["generic.muted"] . " By";
+        $array["generic.warned.by"] = $array["generic.warned"] . " By";
+        $array["generic.kicked.by"] = $array["generic.kicked"] . " By";
+
+        $array["generic.ipban"] = "IP " . $array["generic.ban"];
+        $array["generic.ipmute"] = "IP " . $array["generic.mute"];
+
+        $array["generic.permanent"] = "無期限";
+        $array["generic.permanent.ban"] = $array['generic.permanent'] . ' ' . $array["generic.ban"];
+        $array["generic.permanent.mute"] = $array['generic.permanent'] . ' ' . $array["generic.mute"];
+
+        $array["generic.type"] = "タイプ";
+        $array["generic.active"] = "実行中";
+        $array["generic.inactive"] = "実行中止";
+        $array["generic.expired"] = "期限切れ";
+        $array["generic.expired.kick"] = "N/A";
+        $array["generic.player-name"] = "MCユーザー名";
+
+        $array["page.expired.ban"] = '(' . $array["generic.unbanned"] . ')';
+        $array["page.expired.ban-by"] = '(' . $array["generic.unbanned"] . ' by {name})';
+        $array["page.expired.mute"] = '(' . $array["generic.unmuted"] . ')';
+        $array["page.expired.mute-by"] = '(' . $array["generic.unmuted"] . ' by {name})';
+        $array["page.expired.warning"] = '(' . $array["generic.expired"] . ')';
+
+        $array["table.player"] = $array["generic.player-name"];
+        $array["table.type"] = $array["generic.type"];
+        $array["table.executor"] = "モデレーター";
+        $array["table.reason"] = "理由";
+        $array["table.reason.unban"] = $array["generic.unban"] . " " . $array["table.reason"];
+        $array["table.reason.unmute"] = $array["generic.unmute"] . " " . $array["table.reason"];
+        $array["table.date"] = "実行日時";
+        $array["table.expires"] = "有効期限";
         $array["table.received-warning"] = "受け取った警告";
 
-        // Errors which are only accessible from invalid user input or removed pages.
-        $array["error.name.invalid"] = "プレイヤー名が無効です";
-        $array["history.error.uuid.required"] = "引数がありません (uuid).";
-        $array["info.error.type-id.required"] = "引数がありません (type, id).";
-        $array["info.error.type.invalid"] = "無効なページタイプが要求されました";
-        $array["info.error.id.invalid"] = "無効なID";
-        $array["info.error.id.no-result"] = "エラー: ";
 
+        $array["table.server.name"] = "サーバー";
+        $array["table.server.scope"] = "サーバー範囲";
+        $array["table.server.origin"] = "実行サーバー";
+        $array["table.server.global"] = "*";
+        $array["table.pager.number"] = "ページ";
+
+        $array["action.check"] = "検索";
+        $array["action.return"] = "{origin} に戻る";
+
+        $array["error.missing-args"] = "引数がありません。";
+        $array["error.name.unseen"] = "{name} はサーバーに参加したことがありません。";
+        $array["error.name.invalid"] = "プレイヤー名が無効です";
+        $array["history.error.uuid.no-result"] = "処罰がありません";
+        $array["info.error.id.no-result"] = "エラー: ";
     }
 }
