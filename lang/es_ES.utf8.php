@@ -2,77 +2,88 @@
 
 class es_ES {
     public function __construct() {
-        $this->version = 1;
+        $this->version = 2;
         $array = array();
         $this->array = &$array;
+
         $array["index.welcome.main"] = "Bienvenido a la lista de sanciones de {server}.";
-        $array["index.welcome.sub"] = "Aqui encontraras una lista de todas las sanciones.";
+        $array["index.welcome.sub"] = "Aqui encontrarás una lista de todas las sanciones.";
 
         $array["title.index"] = 'Inicio';
         $array["title.bans"] = 'Baneos';
         $array["title.mutes"] = 'Muteos';
-        $array["title.warnings"] = 'Warns';
-        $array["title.kicks"] = 'Kickeos';
+        $array["title.warnings"] = 'Advertencias';
+        $array["title.kicks"] = 'Expulsiones';
         $array["title.player-history"] = "Sanciones recientes de {name}";
         $array["title.staff-history"] = "Sanciones recientes por {name}";
 
 
-        $array["generic.ban"] = "Ban";
-        $array["generic.mute"] = "Mute";
-        $array["generic.warn"] = "Warning";
-        $array["generic.kick"] = "Kick";
+        $array["generic.ban"] = "Baneo";
+        $array["generic.mute"] = "Muteo";
+        $array["generic.warn"] = "Advertencia";
+        $array["generic.kick"] = "Expulsión";
+
+        $array["generic.unban"] = "Desbaneo";
+        $array["generic.unmute"] = "Desmuteo";
 
         $array["generic.banned"] = "Baneado";
         $array["generic.muted"] = "Muteado";
-        $array["generic.warned"] = "Warneado";
-        $array["generic.kicked"] = "Kickeado";
+        $array["generic.warned"] = "Advertido";
+        $array["generic.kicked"] = "Expulsado";
 
-        $array["generic.banned.by"] = $array["generic.banned"] . " Por";
-        $array["generic.muted.by"] = $array["generic.muted"] . " Por";
-        $array["generic.warned.by"] = $array["generic.warned"] . " Por";
-        $array["generic.kicked.by"] = $array["generic.kicked"] . " Por";
+        $array["generic.unbanned"] = "Desbaneado";
+        $array["generic.unmuted"] = "Desmuteado";
 
-        $array["generic.ipban"] = "IP " . $array["generic.ban"];
-        $array["generic.ipmute"] = "IP " . $array["generic.mute"];
+        $array["generic.banned.by"] = $array["generic.banned"] . " por";
+        $array["generic.muted.by"] = $array["generic.muted"] . " por";
+        $array["generic.warned.by"] = $array["generic.warned"] . " por";
+        $array["generic.kicked.by"] = $array["generic.kicked"] . " por";
 
-        $array["generic.permanent"] = "Permanent";
-        $array["generic.permanent.ban"] = $array['generic.permanent'] . ' ' . $array["generic.ban"];
-        $array["generic.permanent.mute"] = $array['generic.permanent'] . ' ' . $array["generic.mute"];
+        $array["generic.ipban"] = $array["generic.ban"] . " de IP";
+        $array["generic.ipmute"] = $array["generic.mute"] . " de IP";
+
+        $array["generic.permanent"] = "Permanente";
+        $array["generic.permanent.ban"] = $array["generic.ban"] . " permanente";
+        $array["generic.permanent.mute"] = $array["generic.mute"] . " permanente";
 
         $array["generic.type"] = "Tipo";
         $array["generic.active"] = "Activo";
         $array["generic.inactive"] = "Inactivo";
         $array["generic.expired"] = "Expirado";
-        $array["generic.expired.kick"] = "N/A";
+        $array["generic.expired.kick"] = "No disponible";
         $array["generic.player-name"] = "Jugador";
+        $array["generic.reason.default"] = "Razón no establecida";
 
-        $array["page.expired.ban"] = '(Desbaneado)';
-        $array["page.expired.ban-by"] = '(Desbaneado por {name})';
-        $array["page.expired.mute"] = '(Desmuteado)';
-        $array["page.expired.mute-by"] = '(Desmuteado por {name})';
-        $array["page.expired.warning"] = '(' . $array["generic.expired"] . ')';
+        $array["page.expired.ban"] = '(retirado)';
+        $array["page.expired.ban-by"] = '(retirado por {name})';
+        $array["page.expired.mute"] = '(desmuteado)';
+        $array["page.expired.mute-by"] = '(desmuteado por {name})';
+        $array["page.expired.warning"] = '(expirado)';
 
         $array["table.player"] = $array["generic.player-name"];
         $array["table.type"] = $array["generic.type"];
         $array["table.executor"] = "Moderador";
         $array["table.reason"] = "Razón";
+        $array["table.reason.unban"] = "Razón de desbaneo";
+        $array["table.reason.unmute"] = "Razón de desmuteo";
         $array["table.date"] = "Fecha";
         $array["table.expires"] = "Expira";
-        $array["table.received-warning"] = "Warning recibido";
+        $array["table.received-warning"] = "Advertencia recibida";
+
 
         $array["table.server.name"] = "Servidor";
-        $array["table.server.scope"] = "Servidor Scope";
+        $array["table.server.scope"] = "Alcance de la sanción";
         $array["table.server.origin"] = "Servidor de origen";
         $array["table.server.global"] = "*";
         $array["table.pager.number"] = "Página";
 
         $array["action.check"] = "Revisar";
-        $array["action.return"] = "Regresar a {origin}";
+        $array["action.return"] = "Volver a {origin}";
 
         $array["error.missing-args"] = "Faltan argumentos.";
-        $array["error.name.unseen"] = "{name} No ha entrado al servidor.";
-        $array["error.name.invalid"] = "Nombre invalido.";
-        $array["history.error.uuid.no-result"] = "No se encontraron sanciones.";
-        $array["info.error.id.no-result"] = "Error: {type} No encontrado en la base de datos.";
+        $array["error.name.unseen"] = "{name} no ha entrado al servidor.";
+        $array["error.name.invalid"] = "Nombre inválido.";
+        $array["history.error.uuid.no-result"] = "No se han encontrado sanciones.";
+        $array["info.error.id.no-result"] = "Error: no se ha encontrado {type} en la base de datos.";
     }
 }
