@@ -18,7 +18,3 @@ class es_ES {
 }
 ```
 - Translate all array assignments, e.g. `$array["title.bans"] = 'Baneos';`
-- Edit inc/settings.php, set `this->lang` to your locale. Example: `$this->lang = 'es_ES.utf8';`
-
-All messages not translated by the main locale will be translated by the fallback locale (en_US.utf8).
-Thus, if new messages are added to en_US, those new messages will be in English until your locale is updated to include translations for the new messages.
